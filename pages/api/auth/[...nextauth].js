@@ -2,30 +2,6 @@ import NextAuth from "next-auth";
 import RedditProvider from "next-auth/providers/reddit"
 import { LOGIN_URL } from "../../../lib/reddit";
 
-
-// async function refreshAccessToken(token) {
-//   try {
-//     const redditApi = useReddit();
-
-//     const test = await redditApi.updateAccessToken();
-//     console.log("REFRESHED TOKEN IS: " + test);
-
-//     return {
-//       ...token,
-//       accessToken: refreshedToken,
-//       accessTokenExpires: Date.now + refreshedToken.expires_in * 1000,
-//       refreshToken: refreshedToken.refresh_token ?? token.refresh_token,
-//     };
-//   } catch (error) {
-//     console.log(error);
-
-//     return {
-//       ...token,
-//       error: "RefreshAccessTokenError",
-//     };
-//   }
-// }
-
 export default NextAuth({
   providers: [
     RedditProvider({
@@ -47,19 +23,9 @@ export default NextAuth({
       return session;
     },
     async jwt({ token, account, user }){
-
-      // console.log("user");
-      // console.log(user);
-
-      // console.log("account");
-      // console.log(account);
-
-      // console.log("token");
-      // console.log(token);
-
       // initial sign in
       if (account && user) {
-        console.log("ACCESS TOKEN IS VALID...");
+        console.log("INITIAL SIGN IN...");
         return {
           ...token,
           accessToken: account.access_token,
