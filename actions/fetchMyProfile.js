@@ -28,11 +28,11 @@ async function fetchMyProfile(token) {
         },
     })
     .then((res) => res.data)
-    .then((data) => {
-        if (data == null) {
+    .then((res) => {
+        if (res == null) {
           throw "FetchProfileNullException";
         }
-        return resolve(fetchMyProfileSuccess(data));
+        return resolve(fetchMyProfileSuccess(res));
       })
       .catch((error) => {
           return reject(fetchMyProfileFailure(error));

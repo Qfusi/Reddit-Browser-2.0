@@ -6,7 +6,7 @@ import Sidebar from '../components/Sidebar'
 
 export default function Home() {
   return (
-    <div className="bg-black h-screen">
+    <div className="bg-black h-screen overflow-hidden">
       <Head>
         <title>Reddit 2.0</title>
         {/* <link rel="icon" href="/favicon.ico" /> */}
