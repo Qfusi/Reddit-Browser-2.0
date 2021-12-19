@@ -20,7 +20,7 @@ const fetchMyProfileFailure = (error) => {
 };
 
 // async api request with redux-thunk
-async function fetchMyProfile(token, user) {
+async function fetchMyProfile(token) {
   return new Promise(function(resolve, reject) {
     axios.get(`https://oauth.reddit.com/api/v1/me?raw_json=1`, {
         headers: {

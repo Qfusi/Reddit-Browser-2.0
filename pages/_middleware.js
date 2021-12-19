@@ -5,10 +5,14 @@ export async function middleware(req) {
     // Token will exist if user is logged in
     const token = await getToken({ req, secret: process.env.JWT_SECRET });
     
+    console.log(token);
+
     const { pathname } = req.nextUrl;
     if (pathname.includes("/api/auth") || token) {
         return NextResponse.next();
     }
+    
+    //TODO FIX THIS SHIT
 
     return NextResponse.next();
     // if (!token && pathname !== "/login") {

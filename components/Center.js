@@ -10,7 +10,7 @@ function Center() {
     const [profileImage, setProfileImage] = useRecoilState(profileImageState);
 
     useEffect(() => {
-        fetchMyProfile(session.user.accessToken, session.user.name)
+        fetchMyProfile(session.user.accessToken)
         .then((res) => {
             console.log(res)
             setProfileImage(res.payload?.icon_img)
