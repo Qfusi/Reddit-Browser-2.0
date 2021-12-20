@@ -3,12 +3,13 @@ import { signOut, useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import { fetchMySubscriptions, FETCH_MY_SUBSCRIPTIONS_SUCCESS } from "../actions/fetchMySubscriptions";
-import { subredditIdState } from "../atoms/subredditAtom";
+import { subredditClickedState, subredditIdState } from "../atoms/subredditAtom";
 
 function Sidebar() {
     const { data: session } = useSession();
     const [subreddits, setSubreddits] = useState([]);
-    const [subredditId, setSubredditId] = useRecoilState(subredditIdState);
+    const [selectedSubreddit, setSelectedSubreddit] = useRecoilState(subredditIdState);
+    const [subredditClicked, setSubredditClicked] = useRecoilState(subredditClickedState);
 
     useEffect(() => {
         fetchMySubscriptions(session.user.accessToken)
@@ -41,9 +42,16 @@ function Sidebar() {
                 </button>
                 <hr className="border-t-[0.1px] border-gray-900" />
 
-                {/* Subreddits */}
                 {subreddits.length ? subreddits.map((subreddit) => (
-                    <p key={subreddit.data.id} onClick={() => setSubredditId(subreddit.data)} className="cursor-pointer hover:text-white">
+                    <p key={subreddit.data.id}
+                    className="cursor-pointer hover:text-white"
+                    onClick={(e) => {
+                        if (subreddit.data.id !== selectedSubreddit.id){
+                            setSelectedSubreddit(subreddit.data);
+                            setSubredditClicked(true)
+                        }
+                    }}
+                    >
                         {subreddit.data.display_name}
                     </p>
                 )) : <p>loading subreddits...</p>}
