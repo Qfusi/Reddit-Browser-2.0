@@ -24,7 +24,7 @@ async function fetchPosts(token, subreddit, sort) {
   return new Promise(function(resolve, reject) {
     axios.get(`https://oauth.reddit.com/${subreddit}/${sort}.json?limit=75`, {
         headers: {
-        Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${token}`,
         },
     })
     .then((res) => res.data)

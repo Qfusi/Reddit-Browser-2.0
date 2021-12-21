@@ -15,7 +15,6 @@ function Posts({ subreddit, sortBy }) {
         .then((res) => {
             if (res.type === FETCH_POSTS_SUCCESS) {
                 setPosts(() => [...res.payload]);
-                console.log(res.payload);
                 setloadingPosts(false);
             }
         })

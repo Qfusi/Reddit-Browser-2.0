@@ -1,33 +1,12 @@
-import { ArrowDownIcon, ArrowUpIcon } from "@heroicons/react/solid"
 import { useState } from "react";
+import PostVote from "./PostVote";
 
 function Post({ post, id }) {
-    const [upvoteEffect, setUpvoteEffect] = useState(false);
-    const [downvoteEffect, setDownvoteEffect] = useState(false);
-
     return (
         <div className="grid grid-cols-12 text-gray-500 py-2 px-4 hover:bg-gray-900 rounded-lg">
             <div className="flex items-center pr-8">
                 <p className="text-xs hidden md:inline">{id}</p>
-                <div className="col-span-1 flex flex-col space-y-1 ml-auto items-center">
-                    <ArrowUpIcon className={`h-5 w-5 hover:text-orange-500 transition-colors ease-out delay-150 cursor-pointer
-                        ${upvoteEffect && "animate-pulse"}`} 
-                        onClick={() => {
-                            setUpvoteEffect(true);
-                            post.data.score++;
-                        }}
-                        onAnimationEnd={() => setUpvoteEffect(false)}
-                    />
-                    <p className="text-xs">{post.data.score}</p>
-                    <ArrowDownIcon className={`h-5 w-5 hover:text-blue-500 transition-colors ease-out delay-150 cursor-pointer
-                        ${downvoteEffect && "animate-pulse"}`} 
-                        onClick={() => {
-                            setDownvoteEffect(true);
-                            post.data.score--;
-                        }}
-                        onAnimationEnd={() => setDownvoteEffect(false)}
-                    />
-                </div>
+                <PostVote post={post} />
             </div>
             <div className="col-span-9 flex space-x-2">
                 {post.data.thumbnail && <img className="h-16 w-16 cursor-pointer" src={post.data.thumbnail} alt="" />}

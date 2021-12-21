@@ -41,8 +41,8 @@ export default NextAuth({
         return token;
       }
 
-      // access token has expired, need to refresh it
-      console.log("ACCESS TOKEN HAS EXPIRED. TRYING TO REFRESH ON NEXT API REQUEST...");
+      // access token has expired, need to refresh it. TODO fix automatic refresh functionality
+      console.log("ACCESS TOKEN HAS EXPIRED. LOG OUT AND IN TO REFRESH...");
       return token;
     }
   }
