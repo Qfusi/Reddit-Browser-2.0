@@ -65,9 +65,15 @@ function PostVote({ post }) {
                 } else if (localVoteState == false) {
                     dir = -1;
                 }
-                postVote(session.user.accessToken, post.data.id, dir).catch((err) => {console.log(err)});
+                postVote(session.user.accessToken, post.data.id, dir)
+                .then((res) => { // Silent responses for now
+                    // console.log(res);
+                })
+                .catch((err) => {
+                    // console.log(err);
+                });
             }
-        }, 5000), []
+        }, 20000), []
     );
 
     return (

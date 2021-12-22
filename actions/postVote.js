@@ -1,40 +1,44 @@
 import axios from 'axios';
-import { BASE_QUERY_URL } from '../lib/reddit';
 
-//actions
-// const FETCH_POSTS_SUCCESS = 'FETCH_MY_PROFILE_SUCCESS';
-// const FETCH_POSTS_FAILURE = 'FETCH_MY_PROFILE_FAILURE';
+// actions
+const POST_VOTE_SUCCESS = 'POST_VOTE_SUCCESS';
+const POST_VOTE_FAILURE = 'POST_VOTE_FAILURE';
 
-// //action creators
-// const fetchPostsSuccess = (data) => {
-//   return {
-//     type: FETCH_POSTS_SUCCESS,
-//     payload: data,
-//   };
-// };
+//action creators
+const postVoteSuccess = (data) => {
+  return {
+    type: POST_VOTE_SUCCESS,
+    payload: data,
+  };
+};
 
-// const fetchPostsFailure = (error) => {
-//   return {
-//     type: FETCH_POSTS_FAILURE,
-//     payload: error,
-//   };
-// };
+const postVoteFailure = (error) => {
+  return {
+    type: POST_VOTE_FAILURE,
+    payload: error,
+  };
+};
 
-// async api request with redux-thunk
 async function postVote(token, id, dir) {
-    axios.post(`${BASE_QUERY_URL}api/vote?dir=${dir}&id=t3_${id}&rank=2`, {
+    axios({
+        method: 'post',
+        url: '/api/cors',
         headers: {
             Authorization: `Bearer ${token}`,
         },
-    })
-    .then((res) => {
-        console.log(res)
-    })
-    .catch((err) => {
-          console.log(err)
+        params: {
+            "id": id,
+            "dir": dir
+        }
+    }).then(res => { //Silent responses for now
+        // return resolve(fetchPostsSuccess(res));
+    }).catch(error => {
+        // return reject(fetchPostsFailure(error));
     });
 };
 
 export {
   postVote,
+  POST_VOTE_SUCCESS,
+  POST_VOTE_FAILURE
 };
