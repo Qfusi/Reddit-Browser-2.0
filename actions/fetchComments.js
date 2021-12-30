@@ -22,7 +22,7 @@ const fetchCommentsFailure = (error) => {
 // async api request with redux-thunk
 async function fetchComments(token, id, subreddit, sort) {
   return new Promise(function(resolve, reject) {
-    axios.get(`https://oauth.reddit.com/${subreddit}/comments/${id}/${sort}.json`, {
+    axios.get(`https://oauth.reddit.com/${subreddit}/comments/${id}/${sort}.json?raw_json=1`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
