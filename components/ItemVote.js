@@ -2,9 +2,9 @@ import { ArrowDownIcon, ArrowUpIcon } from "@heroicons/react/solid"
 import { debounce } from "lodash";
 import { useCallback, useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
-import { postVote } from "../actions/postVote";
+import { itemVote } from "../actions/itemVote";
 
-function PostVote({ post }) {
+function ItemVote({ item, horizontal}) {
     const { data: session } = useSession();
     const [originalVoteState, setOriginalVoteState] = useState(undefined);
     const [localVoteState, setLocalVoteState] = useState(undefined);
@@ -15,18 +15,18 @@ function PostVote({ post }) {
 
     useEffect(() => { // set value only on initial render
         if (originalVoteState == undefined) {
-            setOriginalVoteState(post.data.likes)
-            setLocalVoteState(post.data.likes)
+            setOriginalVoteState(item.data.likes)
+            setLocalVoteState(item.data.likes)
         }
     }, []);
 
     useEffect(() => {
-        if (post.data.likes) {
+        if (item.data.likes) {
             setLocalVoteState(true);
             setScoreStyle("orange");
             setLocalScoreAddition(1);
         }
-        else if (post.data.likes == false) {
+        else if (item.data.likes == false) {
             setLocalVoteState(false);
             setScoreStyle("blue");
             setLocalScoreAddition(-1);
@@ -36,17 +36,17 @@ function PostVote({ post }) {
             setScoreStyle("");
             setLocalScoreAddition(0);
         }
-    }, [post.data.likes]);
+    }, [item.data.likes]);
 
-    function setPostLike(vote) {
-        if (post.data.likes == vote) {
-            post.data.likes = null;
-        } else if (!post.data.likes && vote) {
-            post.data.likes = true;
-        } else if (post.data.likes && !vote) {
-            post.data.likes = false;
+    function setItemLike(vote) {
+        if (item.data.likes == vote) {
+            item.data.likes = null;
+        } else if (!item.data.likes && vote) {
+            item.data.likes = true;
+        } else if (item.data.likes && !vote) {
+            item.data.likes = false;
         } else {
-            post.data.likes = vote;
+            item.data.likes = vote;
         }
     }
 
@@ -65,7 +65,7 @@ function PostVote({ post }) {
                 } else if (localVoteState == false) {
                     dir = -1;
                 }
-                postVote(session.user.accessToken, post.data.id, dir)
+                itemVote(session.user.accessToken, item.data.id, dir, item.kind)
                 .then((res) => { // Silent responses for now
                     // console.log(res);
                 })
@@ -73,27 +73,30 @@ function PostVote({ post }) {
                     // console.log(err);
                 });
             }
-        }, 20000), []
+        }, 10000), []
     );
 
     return (
-        <div className="col-span-1 flex flex-col space-y-1 ml-auto items-center">
+    <div className={`flex space-y-1 items-center 
+    ${horizontal ? "space-x-2" : "flex-col"}`}>
+
+
         <ArrowUpIcon className={`h-5 w-5 hover:text-orange-500 transition-colors ease-out delay-150 cursor-pointer
             ${upvoteEffect && "animate-pulse"}
             ${localVoteState && "text-orange-500"}`}
             onClick={() => {
                 setUpvoteEffect(true);
-                setPostLike(true);
+                setItemLike(true);
             }}
             onAnimationEnd={() => setUpvoteEffect(false)}
         />
-        <p className={`text-xs text-${scoreStyle}-500`}>{post.data.score + localScoreAddition}</p>
+        <p className={`text-xs text-${scoreStyle}-500`}>{item.data.score + localScoreAddition}</p>
         <ArrowDownIcon className={`h-5 w-5 hover:text-blue-500 transition-colors ease-out cursor-pointer
             ${downvoteEffect && "animate-pulse"}
             ${localVoteState == false && "text-blue-500"}`}
             onClick={() => {
                 setDownvoteEffect(true);
-                setPostLike(false);
+                setItemLike(false);
             }}
             onAnimationEnd={() => setDownvoteEffect(false)}
         />
@@ -101,4 +104,4 @@ function PostVote({ post }) {
     )
 }
 
-export default PostVote
+export default ItemVote

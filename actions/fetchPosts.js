@@ -1,8 +1,8 @@
 import axios from 'axios';
 
 //actions
-const FETCH_POSTS_SUCCESS = 'FETCH_MY_PROFILE_SUCCESS';
-const FETCH_POSTS_FAILURE = 'FETCH_MY_PROFILE_FAILURE';
+const FETCH_POSTS_SUCCESS = 'FETCH_POSTS_SUCCESS';
+const FETCH_POSTS_FAILURE = 'FETCH_POSTS_FAILURE';
 
 //action creators
 const fetchPostsSuccess = (data) => {

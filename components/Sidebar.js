@@ -32,19 +32,15 @@ function Sidebar() {
                     <HomeIcon className="h-5 w-5" />
                     <p>Home</p>
                 </button>
-                <button className="flex items-center space-x-2 hover:text-white">
-                    <HomeIcon className="h-5 w-5" />
-                    <p>Home</p>
-                </button>
-                <button className="flex items-center space-x-2 hover:text-white">
-                    <HomeIcon className="h-5 w-5" />
-                    <p>Home</p>
-                </button>
                 <hr className="border-t-[0.1px] border-gray-900" />
 
                 {subreddits.length ? subreddits.map((subreddit) => (
                     <p key={subreddit.data.id}
-                    className="cursor-pointer hover:text-white"
+                    className={`cursor-pointer hover:text-white
+                    ${subreddit.data.id == selectedSubreddit.id ? "text-orange-500" : ""}
+                    `}
+
+
                     onClick={(e) => {
                         if (subreddit.data.id !== selectedSubreddit.id){
                             setSelectedSubreddit(subreddit.data);

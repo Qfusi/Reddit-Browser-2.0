@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import { fetchPosts, FETCH_POSTS_SUCCESS } from "../actions/fetchPosts";
 import { subredditClickedState } from "../atoms/subredditAtom";
-import Post from "./Post";
+import Post from "./ListPostItem";
 
 function Posts({ subreddit, sortBy }) {
     const { data: session } = useSession();
@@ -11,16 +11,18 @@ function Posts({ subreddit, sortBy }) {
     const [posts, setPosts] = useState([]);
 
     useEffect(() => {
-        fetchPosts(session.user.accessToken, subreddit?.display_name_prefixed, sortBy)
-        .then((res) => {
-            if (res.type === FETCH_POSTS_SUCCESS) {
-                setPosts(() => [...res.payload]);
-                setloadingPosts(false);
-            }
-        })
-        .catch((err) => {
-            console.log(`${err.type} - ${err.payload?.stack}`);
-        });
+        if (subreddit) {
+            fetchPosts(session.user.accessToken, subreddit?.display_name_prefixed, sortBy)
+            .then((res) => {
+                if (res.type === FETCH_POSTS_SUCCESS) {
+                    setPosts(() => [...res.payload]);
+                    setloadingPosts(false);
+                }
+            })
+            .catch((err) => {
+                console.log(`${err.type} - ${err.payload?.stack}`);
+            });
+        }
     }, [session, subreddit, sortBy]);
 
     return (
