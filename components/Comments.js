@@ -21,7 +21,7 @@ function Comments({ id, subreddit}) {
     }, [session, subreddit]);
 
     return (
-        <div className="bg-zinc-900 rounded-lg p-4 space-y-10">
+        <div className="bg-zinc-900 rounded-lg p-4 space-y-2">
             {comments.length ? comments.map((comment, i) => (
                 <Comment key={comment.data.id} comment={comment} id={i + 1} />
             )) : <p>loading comments..</p>}

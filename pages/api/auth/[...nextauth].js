@@ -1,6 +1,43 @@
+import axios from "axios";
 import NextAuth from "next-auth";
 import RedditProvider from "next-auth/providers/reddit"
-import { LOGIN_URL } from "../../../lib/reddit";
+import { LOGIN_URL, REFRESH_TOKEN_URL } from "../../../lib/reddit";
+
+async function refreshAccessToken(token) { // TODO Probably doesn't work entirely..
+  try {
+    const params = new URLSearchParams();
+    params.append("grant_type", "refresh_token");
+    params.append("refresh_token", token.refreshToken);
+
+    const config = {
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      auth: {
+        username: process.env.NEXT_PUBLIC_CLIENT_ID,
+        password: process.env.NEXT_PUBLIC_CLIENT_SECRET,
+      },
+    };
+
+    await axios.post(REFRESH_TOKEN_URL, params, config)
+    .then(res => {
+      token.accessToken = res.data.access_token;
+      token.accessTokenExpires = Date.now() + res.data.expires_in * 1000;
+      return {...token};
+
+    }).catch(err => {
+      console.log(err);
+    });
+
+  } catch (error) {
+    console.log("Refreshing token failed...")
+
+    return {
+      ...token,
+      error: "RefreshAccessTokenError",
+    };
+  }
+}
 
 export default NextAuth({
   providers: [
@@ -35,15 +72,13 @@ export default NextAuth({
         }
       }
 
-      // return previous token if the access token has not expired yet
-      if (Date.now() < token.accessTokenExpires) { //TODO temp /1000
+      if (Date.now() < token.accessTokenExpires) {
         console.log("ACCESS TOKEN IS VALID...");
         return token;
       }
 
-      // access token has expired, need to refresh it. TODO fix automatic refresh functionality
-      console.log("ACCESS TOKEN HAS EXPIRED. LOG OUT AND IN TO REFRESH...");
-      return token;
+      console.log("ACCESS TOKEN HAS EXPIRED. REFRESHING...");
+      return await refreshAccessToken(token);
     }
   }
 })
