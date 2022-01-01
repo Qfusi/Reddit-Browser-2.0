@@ -10,20 +10,8 @@ Modal.setAppElement("#__next");
 function ListPostItem({ post, id }) {
     const [open, setOpen] = useState(false);
 
-    const handleClick = (post) => (e) => {
-        // console.log(post)
-        var hint = post.data.post_hint;
-        // console.log(hint);
-
-        if (hint == "image") {
-            setOpen(true);
-        }
-        if (hint == "hosted:video") { // reddit hosted
-
-        }
-        if (hint == "rich:video") { // i.e youtube hosted
-
-        }
+    const handleClick = () => {
+        setOpen(true);
     }
 
     return (
@@ -32,7 +20,7 @@ function ListPostItem({ post, id }) {
                 <p className="text-xs hidden md:inline">{id}</p>
                 <ItemVote item={post} />
             </div>
-            <div className="col-span-9 flex space-x-2 cursor-pointer" onClick={handleClick(post)}>
+            <div className="col-span-9 flex space-x-2 cursor-pointer" onClick={handleClick}>
                 {post.data.thumbnail && <img className="h-16 w-16 cursor-pointer" src={post.data.thumbnail} alt="" />}
                 <div className="flex flex-col truncate max-w-screen-lg">
                     <p key={post.data.id} className="text-white cursor-pointer">

@@ -19,24 +19,20 @@ const fetchMyProfileFailure = (error) => {
   };
 };
 
-// async api request with redux-thunk
 async function fetchMyProfile(token) {
-  return new Promise(function(resolve, reject) {
-    axios.get(`https://oauth.reddit.com/api/v1/me?raw_json=1`, {
+  return new Promise(async function(resolve, reject) {
+    try {
+      var response = await axios.get(`https://oauth.reddit.com/api/v1/me?raw_json=1`, {
         headers: {
-        Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${token}`,
         },
-    })
-    .then((res) => res.data)
-    .then((res) => {
-        if (res == null) {
-          throw "FetchProfileNullException";
-        }
-        return resolve(fetchMyProfileSuccess(res));
-      })
-      .catch((error) => {
-          return reject(fetchMyProfileFailure(error));
       });
+      
+      var profile = response.data;
+      return resolve(fetchMyProfileSuccess(profile));
+    } catch (error) {
+      return reject(fetchMyProfileFailure(error));
+    }
   });
 };
 

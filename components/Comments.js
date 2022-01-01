@@ -9,15 +9,18 @@ function Comments({ id, subreddit}) {
     const [sort, setSort] = useState("top");
 
     useEffect(() => {
-        fetchComments(session.user.accessToken, id, subreddit, "top")
-        .then((res) => {
-            if (res.type === FETCH_COMMENTS_SUCCESS) {
-                setComments(() => [...res.payload]);
+        async function fetchData() {
+            try {
+                var res = await fetchComments(session.user.accessToken, id, subreddit, "top");
+    
+                if (res.type === FETCH_COMMENTS_SUCCESS) {
+                    setComments(() => [...res.payload]);
+                }
+            } catch (err) {
+                console.log(`${err.type} - ${err.payload?.stack}`);
             }
-        })
-        .catch((err) => {
-            console.log(`${err.type} - ${err.payload?.stack}`);
-        });
+        }
+        fetchData();
     }, [session, subreddit]);
 
     return (

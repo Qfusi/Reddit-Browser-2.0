@@ -19,26 +19,21 @@ const fetchCommentsFailure = (error) => {
   };
 };
 
-// async api request with redux-thunk
 async function fetchComments(token, id, subreddit, sort) {
-  return new Promise(function(resolve, reject) {
-    axios.get(`https://oauth.reddit.com/${subreddit}/comments/${id}/${sort}.json?raw_json=1`, {
+  return new Promise(async function(resolve, reject) {
+    try {
+      var response = await axios.get(`https://oauth.reddit.com/${subreddit}/comments/${id}/${sort}.json?raw_json=1`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
-    })
-    .then((res) => res.data)
-    .then((res) => {
-        if (res == null) {
-          throw "FetchCommentsNullException";
-        }
-        const data = res[1]?.data?.children;
-
-        return resolve(fetchCommentsSuccess(data));
-      })
-      .catch((error) => {
-          return reject(fetchCommentsFailure(error));
       });
+
+      var comments = response?.data[1]?.data?.children;
+      return resolve(fetchCommentsSuccess(comments));
+    } catch (error) {
+      return reject(fetchCommentsFailure(error));
+    }
+
   });
 };
 

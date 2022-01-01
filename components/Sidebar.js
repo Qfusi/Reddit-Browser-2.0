@@ -12,16 +12,18 @@ function Sidebar() {
     const [subredditClicked, setSubredditClicked] = useRecoilState(subredditClickedState);
 
     useEffect(() => {
-        fetchMySubscriptions(session.user.accessToken)
-        .then((res) => {
-            if (res.type === FETCH_MY_SUBSCRIPTIONS_SUCCESS) {
-                const subreddits = res.payload.sort((a, b) => a.data.display_name.localeCompare(b.data.display_name))
-                setSubreddits(() => [...subreddits])
+        async function fetchData() {
+            try {
+                var res = await fetchMySubscriptions(session.user.accessToken);
+                if (res.type === FETCH_MY_SUBSCRIPTIONS_SUCCESS) {
+                    const subreddits = res.payload.sort((a, b) => a.data.display_name.localeCompare(b.data.display_name))
+                    setSubreddits(() => [...subreddits])
+                }
+            } catch (err) {
+                console.log(`${err.type} - ${err.payload?.stack}`);
             }
-        })
-        .catch((err) => {
-            console.log(`${err.type} - ${err.payload?.stack}`);
-        });
+        }
+        fetchData();
     }, [session]);
 
     return (

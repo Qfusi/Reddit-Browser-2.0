@@ -11,18 +11,20 @@ function Posts({ subreddit, sortBy }) {
     const [posts, setPosts] = useState([]);
 
     useEffect(() => {
-        if (subreddit) {
-            fetchPosts(session.user.accessToken, subreddit?.display_name_prefixed, sortBy)
-            .then((res) => {
-                if (res.type === FETCH_POSTS_SUCCESS) {
-                    setPosts(() => [...res.payload]);
-                    setloadingPosts(false);
+        async function fetchData() {
+            if (subreddit) {
+                try {
+                   var res = await fetchPosts(session.user.accessToken, subreddit?.display_name_prefixed, sortBy);
+                   if (res.type === FETCH_POSTS_SUCCESS) {
+                        setPosts(() => [...res.payload]);
+                        setloadingPosts(false);
+                    }
+                } catch (err) {
+                    console.log(`${err.type} - ${err.payload?.stack}`);
                 }
-            })
-            .catch((err) => {
-                console.log(`${err.type} - ${err.payload?.stack}`);
-            });
+            }
         }
+        fetchData();        
     }, [session, subreddit, sortBy]);
 
     return (

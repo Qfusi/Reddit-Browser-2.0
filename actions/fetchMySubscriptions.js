@@ -19,25 +19,20 @@ const fetchMySubscriptionsFailure = (error) => {
   };
 };
 
-// async api request with redux-thunk
 async function fetchMySubscriptions(token) {
-  return new Promise(function(resolve, reject) {
-    axios.get(`https://oauth.reddit.com/subreddits/mine/subscriber?limit=75`, {
+  return new Promise(async function(resolve, reject) {
+    try {
+      var response = await     axios.get(`https://oauth.reddit.com/subreddits/mine/subscriber?limit=75`, {
         headers: {
-        Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${token}`,
         },
-    })
-    .then((res) => res.data)
-    .then((res) => {
-        if (res == null) {
-          throw "FetchProfileNullException";
-        }
-        const data = res.data.children;
-        return resolve(fetchMySubscriptionsSuccess(data));
-      })
-      .catch((error) => {
-          return reject(fetchMySubscriptionsFailure(error));
       });
+
+      var subscriptions = response.data.data.children;
+      return resolve(fetchMySubscriptionsSuccess(subscriptions));
+    } catch (error) {
+      return reject(fetchMySubscriptionsFailure(error));
+    }
   });
 };
 

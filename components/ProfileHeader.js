@@ -13,17 +13,20 @@ function ProfileHeader() {
 
     function classNames(...classes) {
         return classes.filter(Boolean).join(' ')
-      }
+    }
 
     useEffect(() => {
-        fetchMyProfile(session.user.accessToken)
-        .then((res) => {
-            if (res.type === FETCH_MY_PROFILE_SUCCESS)
-                setProfileImage(res.payload?.icon_img)
-        })
-        .catch((err) => {
-            console.log(`${err.type} - ${err.payload?.stack}`);
-        });
+        async function fetchData() {
+            try {
+                var res = await fetchMyProfile(session.user.accessToken);
+                if (res.type === FETCH_MY_PROFILE_SUCCESS) {
+                    setProfileImage(res.payload?.icon_img)
+                }
+            } catch (error) {
+                console.log(`${err.type} - ${err.payload?.stack}`);
+            }
+        }
+        fetchData();
     }, [session]);
 
     return (

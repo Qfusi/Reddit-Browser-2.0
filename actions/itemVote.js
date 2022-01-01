@@ -20,22 +20,23 @@ const itemVoteFailure = (error) => {
 };
 
 async function itemVote(token, id, dir, type_prefix) {
-    axios({
-        method: 'post',
-        url: '/api/cors',
-        headers: {
-            Authorization: `Bearer ${token}`,
-        },
-        params: {
-            "id": id,
-            "dir": dir,
-            "type_prefix": type_prefix
-        }
-    }).then(res => { //Silent responses for now
-      // return resolve(fetchPostsSuccess(res));
-    }).catch(error => {
-      // return reject(fetchPostsFailure(error));
+  try {
+    await axios({
+      method: 'post',
+      url: '/api/cors',
+      headers: {
+          Authorization: `Bearer ${token}`,
+      },
+      params: {
+          "id": id,
+          "dir": dir,
+          "type_prefix": type_prefix
+      }
     });
+    // return resolve(fetchPostsSuccess(res));
+  } catch (error) {
+    // return reject(fetchPostsFailure(error));
+  }
 };
 
 export {
