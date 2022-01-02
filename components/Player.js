@@ -19,7 +19,7 @@ function Player({ post }) {
 
         }
         else if (endsWithAny(["gifv"])) {
-            console.log("gifv");
+            // console.log("gifv");
             setMedia({
                 url: post.url.substr(0, post.url.lastIndexOf(".")) + ".mp4",
                 w: post.preview?.reddit_video_preview?.width,
@@ -27,7 +27,7 @@ function Player({ post }) {
             });
         }
         else if (post.post_hint == "hosted:video") {
-            console.log("reddit hosted");
+            // console.log("reddit hosted");
             setMedia({
                 url: post.media.reddit_video.hls_url,
                 w: post.media.reddit_video.width,
@@ -35,7 +35,7 @@ function Player({ post }) {
             });
         }
         else if (post.post_hint == "rich:video") {
-            console.log("rich hosted");
+            // console.log("rich hosted");
             setMedia({
                 url: post.url,
             });
@@ -45,7 +45,7 @@ function Player({ post }) {
                 return;
             }
 
-            console.log("gallery");
+            // console.log("gallery");
 
             for (const [key, value] of Object.entries(post.media_metadata)) {
                 setGallery(oldArr => [...oldArr, {
@@ -56,7 +56,7 @@ function Player({ post }) {
             }
         }
         else {
-            console.log("else");
+            // console.log("else");
             setMedia({
                 url: post.media?.reddit_video?.hls_url ?? post.url,
                 w: post.media?.reddit_video?.width,

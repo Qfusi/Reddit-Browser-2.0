@@ -8,7 +8,7 @@ import { ShareIcon } from "@heroicons/react/outline";
 
 function ModalPost({post}) {
     const [crossposted, setCrossposted] = useState(post.data.crosspost_parent);
-    console.log(post);
+    // console.log(post);
 
     return (
         <div>
@@ -44,11 +44,11 @@ function ModalPost({post}) {
             </div>
 
             <div className="m-4 space-y-4">
-                {crossposted && 
+                {crossposted &&
                     <CrosspostedContent post={post.data.crosspost_parent_list} />
                 }
 
-                {post.data.is_self && post.data.selftext.length > 0 ? 
+                {post.data.is_self && post.data.selftext.length > 0 ?
                     <div className="p-4 bg-zinc-900 rounded-lg text-gray-300 text-sm">
                         <p>{post.data.selftext}</p>
                     </div>
@@ -56,7 +56,7 @@ function ModalPost({post}) {
                     <></>
                 }
 
-                {!crossposted && !post.data.is_self && 
+                {!crossposted && !post.data.is_self &&
                     <Player post={post.data} />
                 }
 
