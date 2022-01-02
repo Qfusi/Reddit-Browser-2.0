@@ -1,10 +1,11 @@
-import { ChevronDoubleDownIcon, ChevronDoubleUpIcon, ShieldCheckIcon } from "@heroicons/react/outline"
+import { MinusSmIcon, ShieldCheckIcon } from "@heroicons/react/outline"
 import axios from "axios";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import ItemVote from "./ItemVote";
 import { timeSince } from "../lib/timeAndDateHelper";
 import { BsPinAngle } from "react-icons/bs";
+import { PlusSmIcon } from "@heroicons/react/solid";
 
 function Comment({comment}) {
     const { data: session } = useSession();
@@ -32,7 +33,7 @@ function Comment({comment}) {
             {collapsed
             ?
                 <div className="col-span-12 flex mb-2 ml-4 min-w-fit space-x-4 items-center">
-                    <ChevronDoubleUpIcon className="h-5 w-5 cursor-pointer" onClick={() => setCollapsed(false)}/>
+                    <PlusSmIcon className="h-5 w-5 cursor-pointer hover:text-white hover:scale-110" onClick={() => setCollapsed(false)}/>
                     <img className="h-6 w-6 cursor-pointer rounded-full" src={author?.icon_img ?? author?.snoovatar_img} alt="" />
                     <p className="cursor-pointer hover:underline">{comment.data.author}</p>
                     <p className="text-xs text-gray-500">
@@ -44,7 +45,7 @@ function Comment({comment}) {
                 <>
                     <div className="col-span-1 flex flex-col min-w-fit mr-4 items-center space-y-3">
                         <img className="h-6 w-6 cursor-pointer rounded-full" src={author?.icon_img ?? author?.snoovatar_img} alt="" />
-                        <ChevronDoubleDownIcon className="h-5 w-5 cursor-pointer" onClick={() => setCollapsed(true)}/>
+                        <MinusSmIcon className="h-5 w-5 cursor-pointer hover:text-white hover:scale-110" onClick={() => setCollapsed(true)}/>
                     </div>
 
                     <div className="col-span-11 flex flex-col mb-3 items-start space-y-1">

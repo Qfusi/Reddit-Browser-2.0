@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import { fetchPosts, FETCH_POSTS_SUCCESS } from "../actions/fetchPosts";
 import { subredditClickedState } from "../atoms/subredditAtom";
-import Post from "./ListPostItem";
+import ListPostItem from "./ListPostItem";
 
 function Posts({ subreddit, sortBy }) {
     const { data: session } = useSession();
@@ -37,7 +37,7 @@ function Posts({ subreddit, sortBy }) {
                 : 
             <div className="space-y-2">
                 {posts.length ? posts.map((post, i) => (
-                    <Post key={post.data.id} post={post} id={i + 1} />
+                    <ListPostItem key={post.data.id} post={post} id={i + 1} />
                 )) : <p>loading posts...</p>}
             </div>
             }

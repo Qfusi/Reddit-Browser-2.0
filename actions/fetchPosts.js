@@ -22,7 +22,7 @@ const fetchPostsFailure = (error) => {
 async function fetchPosts(token, subreddit, sort) {
   return new Promise(async function(resolve, reject) {
     try {
-      var response = await axios.get(`https://oauth.reddit.com/${subreddit}/${sort}.json?limit=75`, {
+      var response = await axios.get(`https://oauth.reddit.com/${subreddit}/${sort}.json?limit=75&raw_json=1`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

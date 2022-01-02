@@ -4,6 +4,8 @@ import { useState } from "react";
 import ModalPost from "./ModalPost";
 import { BsPinAngle } from "react-icons/bs";
 import { timeSince } from "../lib/timeAndDateHelper";
+import { ShareIcon } from "@heroicons/react/solid";
+import { MenuIcon } from "@heroicons/react/outline";
 
 Modal.setAppElement("#__next");
 
@@ -21,16 +23,28 @@ function ListPostItem({ post, id }) {
                 <ItemVote item={post} />
             </div>
             <div className="col-span-9 flex space-x-2 cursor-pointer" onClick={handleClick}>
-                {post.data.thumbnail && <img className="h-16 w-16 cursor-pointer" src={post.data.thumbnail} alt="" />}
+                {post.data.thumbnail == "self" ?
+                    <MenuIcon className="w-14 h-14 border" />
+                    :
+                    <img className="h-16 w-16 cursor-pointer" src={post.data.thumbnail} alt="" />
+                }
                 <div className="flex flex-col truncate max-w-screen-lg">
-                    <p key={post.data.id} className="text-white cursor-pointer">
-                        {post.data.title}
-                    </p>
+                    <div className="flex space-x-2">
+                        {post.data.post_hint == "link" && post.data.crosspost_parent &&
+                            <div className="flex bg-orange-500 rounded-full text-white px-2 text-sm items-center space-x-1">
+                                <ShareIcon className="w-4 h-4" />
+                            </div>
+                        }
+                        <p key={post.data.id} className="text-white cursor-pointer">
+                            {post.data.title}
+                        </p>
+                    </div>
                     <div className="flex text-sm space-x-1">
                         <p>Posted by </p>
                         <p className="cursor-pointer hover:text-white">
                             {`${post.data.author}`}
                         </p>
+                        <p>·</p>
                         <p>
                             {timeSince(new Date(post.data.created * 1000))}
                         </p>
@@ -43,7 +57,7 @@ function ListPostItem({ post, id }) {
             <div className="col-span-2 grid grid-cols-2 grid-rows-2 items-center justify-items-center ml-auto md:ml-0 text-sm">
                 <p className="hover:text-white cursor-pointer">Share</p>
                 <p className="hover:text-white cursor-pointer">Save</p>
-                <p className="hover:text-white cursor-pointer">Comments</p>
+                <p className="hover:text-white cursor-pointer">{post.data.num_comments} Comments</p>
                 <p className="hover:text-white cursor-pointer">Hide</p>
             </div>
 

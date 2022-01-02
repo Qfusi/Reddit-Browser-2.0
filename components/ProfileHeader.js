@@ -22,7 +22,7 @@ function ProfileHeader() {
                 if (res.type === FETCH_MY_PROFILE_SUCCESS) {
                     setProfileImage(res.payload?.icon_img)
                 }
-            } catch (error) {
+            } catch (err) {
                 console.log(`${err.type} - ${err.payload?.stack}`);
             }
         }

@@ -1,29 +1,14 @@
-import ItemVote from "./ItemVote"
 import { timeSince } from "../lib/timeAndDateHelper"
+import ItemVote from "./ItemVote"
 import Comments from "./Comments"
+import Player from "./Player";
 import { useEffect, useState } from "react";
+import CrosspostedContent from "./CrosspostedContent";
+import { ShareIcon } from "@heroicons/react/outline";
 
 function ModalPost({post}) {
-    const [media, setMedia] = useState();
-
-    useEffect(() => {
-        if (!post.data.url.endsWith(".gif")) {
-            setMedia(post.data.url.substr(0, post.data.url.lastIndexOf(".")) + ".mp4");
-        }
-    }, [post]);
-
-    var hint = post.data.post_hint;
+    const [crossposted, setCrossposted] = useState(post.data.crosspost_parent);
     console.log(post);
-
-    if (hint == "image") {
-
-    }
-    if (hint == "hosted:video") { // reddit hosted
-
-    }
-    if (hint == "rich:video") { // i.e youtube hosted
-
-    }
 
     return (
         <div>
@@ -33,12 +18,20 @@ function ModalPost({post}) {
                 </div>
                 <div className="flex-col truncate max-w-screen-lg">
                     <div className="flex text-sm space-x-2">
+                        {crossposted &&
+                            <div className="flex bg-orange-500 rounded-full text-white px-2 text-sm items-center space-x-1">
+                                <ShareIcon className="w-4 h-4" />
+                                <p className="">Crosspost</p>
+                            </div>
+                        }
                         <p>
-                            Posted in {post.data.subreddit_name_prefixed} by
+                            {post.data.subreddit_name_prefixed}
                         </p>
+                        <p>·</p>
                         <p className="cursor-pointer hover:text-white">
                             {post.data.author}
                         </p>
+                        <p>·</p>
                         <p>
                             {timeSince(new Date(post.data.created * 1000))}
                         </p>
@@ -47,30 +40,28 @@ function ModalPost({post}) {
                     <p key={post.data.id} className="text-white text-xl">
                         {post.data.title}
                     </p>
-
                 </div>
             </div>
 
             <div className="m-4 space-y-4">
-                <div className="flex justify-center bg-zinc-900 rounded-lg">
-                    {media ? 
-                        <video autoPlay loop controls preload="auto" >
-                            <source src={media} type="video/mp4"/>
-                        </video>
-                        : 
-                        <img className="max-h-screen w-auto h-auto max-w-2xl rounded-lg" src={post.data.url} alt="" />
-                    }
+                {crossposted && 
+                    <CrosspostedContent post={post.data.crosspost_parent_list} />
+                }
 
-                </div>
-                
-                {post.data.selftext && 
-                <div className="p-4 bg-zinc-900 rounded-lg text-gray-300 text-sm">
-                    <p>{post.data.selftext}</p>
-                </div>}
-                
+                {post.data.is_self && post.data.selftext.length > 0 ? 
+                    <div className="p-4 bg-zinc-900 rounded-lg text-gray-300 text-sm">
+                        <p>{post.data.selftext}</p>
+                    </div>
+                    :
+                    <></>
+                }
 
-                <div className="flex justify-center items-center bg-zinc-900 h-52 rounded-lg p-4">
-                    <textarea className="bg-zinc-900 border rounded-lg h-full w-full p-2 text-white resize-none"  placeholder="Post something.." />
+                {!crossposted && !post.data.is_self && 
+                    <Player post={post.data} />
+                }
+
+                <div className="flex justify-center items-center bg-zinc-900 h-52 rounded-lg">
+                    <textarea className="bg-zinc-900 border-[0.1px] border-gray-900 rounded-lg h-full w-full p-2 text-white resize-none"  placeholder="Post something.." />
                 </div>
 
                 <Comments id={post.data.id} subreddit={post.data.subreddit_name_prefixed} />
