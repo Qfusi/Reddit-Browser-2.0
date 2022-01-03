@@ -1,6 +1,6 @@
-import { atom } from "recoil"
+import { atom } from 'recoil';
 
 export const profileImageState = atom({
-    key: "profileImageState",
-    default: null
-})
+    key: 'profileImageState',
+    default: null,
+});

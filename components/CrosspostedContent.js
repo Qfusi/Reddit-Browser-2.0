@@ -1,9 +1,9 @@
-import { useState } from "react";
-import { timeSince } from "../lib/timeAndDateHelper";
-import Player from "./Player";
+import { useState } from 'react';
+import { timeSince } from '../lib/timeAndDateHelper';
+import Player from './Player';
 
 function CrosspostedContent({ post }) {
-    const [selectedPost, setPost] = useState(post[0]);
+    const [selectedPost] = useState(post[0]);
     return (
         <div className="bg-zinc-900 border border-gray-900 rounded-lg text-sm">
             <div className="flex-col truncate max-w-screen-lg px-3 py-1">
@@ -16,11 +16,11 @@ function CrosspostedContent({ post }) {
                         {selectedPost.author}
                     </p>
                     <p>·</p>
-                    <p>
-                        {timeSince(new Date(selectedPost.created * 1000))}
-                    </p>
+                    <p>{timeSince(new Date(selectedPost.created * 1000))}</p>
                 </div>
-                <p key={selectedPost.id} className="inline-block text-white cursor-pointer">
+                <p
+                    key={selectedPost.id}
+                    className="inline-block text-white cursor-pointer">
                     {selectedPost.title}
                 </p>
             </div>
@@ -28,10 +28,12 @@ function CrosspostedContent({ post }) {
             <div className="flex space-x-2 px-3 py-1">
                 <p>{selectedPost.score} points</p>
                 <p>·</p>
-                <p className="hover:underline">{selectedPost.num_comments} comments</p>
+                <p className="hover:underline">
+                    {selectedPost.num_comments} comments
+                </p>
             </div>
         </div>
-    )
+    );
 }
 
-export default CrosspostedContent
+export default CrosspostedContent;
