@@ -25,13 +25,13 @@ async function itemVote(token, id, dir, type_prefix) {
             method: 'post',
             url: '/api/cors',
             headers: {
-                Authorization: `Bearer ${token}`,
+                Authorization: `Bearer ${token}`
             },
             params: {
                 id: id,
                 dir: dir,
-                type_prefix: type_prefix,
-            },
+                type_prefix: type_prefix
+            }
         });
         // return resolve(fetchPostsSuccess(res));
     } catch (error) {

@@ -20,9 +20,9 @@ function Comment({ comment }) {
                         `https://oauth.reddit.com/user/${comment.data.author}/about.json?raw_json=1`,
                         {
                             headers: {
-                                Authorization: `Bearer ${session.user.accessToken}`,
-                            },
-                        },
+                                Authorization: `Bearer ${session.user.accessToken}`
+                            }
+                        }
                     );
                     setAuthor(res.data.data);
                 } catch (error) {
@@ -46,17 +46,11 @@ function Comment({ comment }) {
                         src={author?.icon_img ?? author?.snoovatar_img}
                         alt=""
                     />
-                    <p className="cursor-pointer hover:underline">
-                        {comment.data.author}
-                    </p>
+                    <p className="cursor-pointer hover:underline">{comment.data.author}</p>
                     <p className="text-xs text-gray-500">
                         · {timeSince(new Date(comment.data.created * 1000))}
                     </p>
-                    {comment.data.stickied ? (
-                        <BsPinAngle className="h-4 w-4 text-green-500" />
-                    ) : (
-                        ''
-                    )}
+                    {comment.data.stickied ? <BsPinAngle className="h-4 w-4 text-green-500" /> : ''}
                 </div>
             ) : (
                 <>
@@ -74,14 +68,9 @@ function Comment({ comment }) {
 
                     <div className="col-span-11 flex flex-col mb-3 items-start space-y-1">
                         <div className="flex items-center space-x-2">
-                            <p className="cursor-pointer hover:underline">
-                                {comment.data.author}
-                            </p>
+                            <p className="cursor-pointer hover:underline">{comment.data.author}</p>
                             <p className="text-xs text-gray-500">
-                                ·{' '}
-                                {timeSince(
-                                    new Date(comment.data.created * 1000),
-                                )}
+                                · {timeSince(new Date(comment.data.created * 1000))}
                             </p>
                             {comment.data.stickied ? (
                                 <BsPinAngle className="h-4 w-4 text-green-500" />

@@ -1,60 +1,50 @@
 import { useSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import { fetchPosts, FETCH_POSTS_SUCCESS } from '../actions/fetchPosts';
-import { subredditClickedState } from '../atoms/subredditAtom';
+import { subredditClickedState, subSortState, subTopSortState } from '../atoms/subredditAtom';
 import ListPostItem from './ListPostItem';
+import LinearProgress from '@mui/material/LinearProgress';
 
-function Posts({ subreddit, sortBy }) {
+function Posts({ subreddit }) {
     const { data: session } = useSession();
-    const [loadingPosts, setloadingPosts] = useRecoilState(
-        subredditClickedState,
-    );
+    const [loadingPosts, setloadingPosts] = useRecoilState(subredditClickedState);
     const [posts, setPosts] = useState([]);
+    const subSort = useRecoilValue(subSortState);
+    const subTopSort = useRecoilValue(subTopSortState);
 
     useEffect(() => {
         async function fetchData() {
-            if (subreddit) {
-                try {
-                    var res = await fetchPosts(
-                        session.user.accessToken,
-                        subreddit?.display_name_prefixed,
-                        sortBy,
-                    );
-                    if (res.type === FETCH_POSTS_SUCCESS) {
-                        setPosts(() => [...res.payload]);
-                        setloadingPosts(false);
-                    }
-                } catch (err) {
-                    console.log(`${err.type} - ${err.payload?.stack}`);
+            try {
+                var res = await fetchPosts(
+                    session.user.accessToken,
+                    subreddit?.display_name_prefixed,
+                    subSort,
+                    subTopSort
+                );
+                if (res.type === FETCH_POSTS_SUCCESS) {
+                    setPosts(() => [...res.payload]);
+                    setloadingPosts(false);
                 }
+            } catch (err) {
+                console.log(`${err.type} - ${err.payload?.stack}`);
             }
         }
         fetchData();
-    }, [session, subreddit, sortBy]);
+    }, [session, subreddit, subSort, subTopSort]);
 
     return (
         <>
-            {loadingPosts ? (
-                <div className="flex flex-col h-72 w-full justify-center items-center space-y-5">
-                    <p className="text-white text-sm">Loading Posts...</p>
-                    <div className="loader ease-linear rounded-full border-4 border-t-4 border-gray-600 h-12 w-12 mb-4"></div>
-                </div>
-            ) : (
-                <div className="space-y-2">
-                    {posts.length ? (
-                        posts.map((post, i) => (
-                            <ListPostItem
-                                key={post.data.id}
-                                post={post}
-                                id={i + 1}
-                            />
-                        ))
-                    ) : (
-                        <p>loading posts...</p>
-                    )}
-                </div>
-            )}
+            {loadingPosts ? <LinearProgress color="warning" /> : <div className="h-1"></div>}
+            <div className="space-y-2">
+                {posts.length ? (
+                    posts.map((post, i) => (
+                        <ListPostItem key={post.data.id} post={post} id={i + 1} />
+                    ))
+                ) : (
+                    <p>loading posts...</p>
+                )}
+            </div>
         </>
     );
 }

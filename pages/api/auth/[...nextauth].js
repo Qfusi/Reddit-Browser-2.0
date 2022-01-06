@@ -13,20 +13,19 @@ async function refreshAccessToken(token) {
 
         const config = {
             headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
+                'Content-Type': 'application/x-www-form-urlencoded'
             },
             auth: {
                 username: process.env.NEXT_PUBLIC_CLIENT_ID,
-                password: process.env.NEXT_PUBLIC_CLIENT_SECRET,
-            },
+                password: process.env.NEXT_PUBLIC_CLIENT_SECRET
+            }
         };
 
         await axios
             .post(REFRESH_TOKEN_URL, params, config)
             .then((res) => {
                 token.accessToken = res.data.access_token;
-                token.accessTokenExpires =
-                    Date.now() + res.data.expires_in * 1000;
+                token.accessTokenExpires = Date.now() + res.data.expires_in * 1000;
                 return { ...token };
             })
             .catch((err) => {
@@ -37,7 +36,7 @@ async function refreshAccessToken(token) {
 
         return {
             ...token,
-            error: 'RefreshAccessTokenError',
+            error: 'RefreshAccessTokenError'
         };
     }
 }
@@ -47,12 +46,12 @@ export default NextAuth({
         RedditProvider({
             clientId: process.env.NEXT_PUBLIC_CLIENT_ID,
             clientSecret: process.env.NEXT_PUBLIC_CLIENT_SECRET,
-            authorization: LOGIN_URL,
-        }),
+            authorization: LOGIN_URL
+        })
     ],
     secret: process.env.JWT_SECRET,
     pages: {
-        signIn: '/login',
+        signIn: '/login'
     },
     callbacks: {
         async session({ session, token }) {
@@ -71,7 +70,7 @@ export default NextAuth({
                     accessToken: account.access_token,
                     refreshToken: account.refresh_token,
                     username: account.providerAccountId,
-                    accessTokenExpires: account.expires_at * 1000, // Expiration time is handled in milliseconds
+                    accessTokenExpires: account.expires_at * 1000 // Expiration time is handled in milliseconds
                 };
             }
 
@@ -82,6 +81,6 @@ export default NextAuth({
 
             console.log('ACCESS TOKEN HAS EXPIRED. REFRESHING...');
             return await refreshAccessToken(token);
-        },
-    },
+        }
+    }
 });

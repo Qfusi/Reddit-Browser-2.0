@@ -4,16 +4,16 @@ import Cors from 'cors';
 
 const cors = initMiddleware(
     Cors({
-        methods: ['GET', 'POST', 'OPTIONS'],
-    }),
+        methods: ['GET', 'POST', 'OPTIONS']
+    })
 );
 
 const settings = {
     method: 'POST',
     headers: {
         Accept: 'application/json',
-        Authorization: 'Bearer my_authorization',
-    },
+        Authorization: 'Bearer my_authorization'
+    }
 };
 
 export default async function handler(req, res) {

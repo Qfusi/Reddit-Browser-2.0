@@ -8,14 +8,14 @@ const FETCH_COMMENTS_FAILURE = 'FETCH_COMMENTS_FAILURE';
 const fetchCommentsSuccess = (data) => {
     return {
         type: FETCH_COMMENTS_SUCCESS,
-        payload: data,
+        payload: data
     };
 };
 
 const fetchCommentsFailure = (error) => {
     return {
         type: FETCH_COMMENTS_FAILURE,
-        payload: error,
+        payload: error
     };
 };
 
@@ -24,9 +24,9 @@ async function fetchComments(token, id, subreddit, sort) {
         `https://oauth.reddit.com/${subreddit}/comments/${id}/${sort}.json?raw_json=1`,
         {
             headers: {
-                Authorization: `Bearer ${token}`,
-            },
-        },
+                Authorization: `Bearer ${token}`
+            }
+        }
     );
 
     return new Promise(function (resolve, reject) {

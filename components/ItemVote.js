@@ -74,7 +74,7 @@ function ItemVote({ item, horizontal }) {
                     });
             }
         }, 10000),
-        [],
+        []
     );
 
     return (

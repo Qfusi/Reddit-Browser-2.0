@@ -4,10 +4,7 @@ import { signOut, useSession } from 'next-auth/react';
 import { useEffect } from 'react';
 import { Fragment } from 'react/cjs/react.production.min';
 import { useRecoilState } from 'recoil';
-import {
-    fetchMyProfile,
-    FETCH_MY_PROFILE_SUCCESS,
-} from '../actions/fetchMyProfile';
+import { fetchMyProfile, FETCH_MY_PROFILE_SUCCESS } from '../actions/fetchMyProfile';
 import { profileImageState } from '../atoms/profileAtom';
 
 function ProfileHeader() {
@@ -62,7 +59,7 @@ function ProfileHeader() {
                                 href="#"
                                 className={classNames(
                                     active ? 'bg-slate-900' : '',
-                                    'block px-4 py-2 text-sm text-gray-500',
+                                    'block px-4 py-2 text-sm text-gray-500'
                                 )}>
                                 Profile
                             </a>
@@ -74,7 +71,7 @@ function ProfileHeader() {
                                 href="#"
                                 className={classNames(
                                     active ? 'bg-slate-900' : '',
-                                    'block px-4 py-2 text-sm text-gray-500',
+                                    'block px-4 py-2 text-sm text-gray-500'
                                 )}>
                                 Settings
                             </a>
@@ -87,7 +84,7 @@ function ProfileHeader() {
                                 onClick={signOut}
                                 className={classNames(
                                     active ? 'bg-slate-900' : '',
-                                    'block px-4 py-2 text-sm text-gray-500',
+                                    'block px-4 py-2 text-sm text-gray-500'
                                 )}>
                                 Sign out
                             </a>

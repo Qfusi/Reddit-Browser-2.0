@@ -8,26 +8,38 @@ const FETCH_POSTS_FAILURE = 'FETCH_POSTS_FAILURE';
 const fetchPostsSuccess = (data) => {
     return {
         type: FETCH_POSTS_SUCCESS,
-        payload: data,
+        payload: data
     };
 };
 
 const fetchPostsFailure = (error) => {
     return {
         type: FETCH_POSTS_FAILURE,
-        payload: error,
+        payload: error
     };
 };
 
-async function fetchPosts(token, subreddit, sort) {
-    var response = await axios.get(
-        `https://oauth.reddit.com/${subreddit}/${sort}.json?limit=75&raw_json=1`,
-        {
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-        },
-    );
+async function fetchPosts(token, subreddit, sort, sortTop) {
+    var response = null;
+    if (subreddit !== undefined) {
+        response = await axios.get(
+            `https://oauth.reddit.com/${subreddit}/${sort}.json?limit=75&t=${sortTop}&raw_json=1`,
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            }
+        );
+    } else {
+        response = await axios.get(
+            `https://oauth.reddit.com/${sort}?limit=75&t=${sortTop}&raw_json=1`,
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            }
+        );
+    }
 
     return new Promise(function (resolve, reject) {
         try {

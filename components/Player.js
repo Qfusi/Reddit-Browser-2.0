@@ -22,35 +22,33 @@ function Player({ post }) {
             setMedia({
                 url: post.url.substr(0, post.url.lastIndexOf('.')) + '.mp4',
                 w: post.preview?.reddit_video_preview?.width,
-                h: post.preview?.reddit_video_preview?.height,
+                h: post.preview?.reddit_video_preview?.height
             });
         } else if (post.post_hint == 'hosted:video') {
             // console.log("reddit hosted");
             setMedia({
                 url: post.media.reddit_video.hls_url,
                 w: post.media.reddit_video.width,
-                h: post.media.reddit_video.height,
+                h: post.media.reddit_video.height
             });
         } else if (post.post_hint == 'rich:video') {
             // console.log("rich hosted");
             setMedia({
-                url: post.url,
+                url: post.url
             });
         } else if (post.gallery_data) {
             if (Object.entries(post.media_metadata)?.length == gallery.length) {
                 return;
             }
 
-            // console.log("gallery");
-
-            for (const [value] of Object.entries(post.media_metadata)) {
+            for (const [, value] of Object.entries(post.media_metadata)) {
                 setGallery((oldArr) => [
                     ...oldArr,
                     {
                         original: value.s.u,
                         originalWidth: value.s.x,
-                        originalHeight: value.s.y,
-                    },
+                        originalHeight: value.s.y
+                    }
                 ]);
             }
         } else {
@@ -58,7 +56,7 @@ function Player({ post }) {
             setMedia({
                 url: post.media?.reddit_video?.hls_url ?? post.url,
                 w: post.media?.reddit_video?.width,
-                h: post.media?.reddit_video?.height,
+                h: post.media?.reddit_video?.height
             });
         }
     }, [post]);

@@ -6,11 +6,14 @@ import { BsPinAngle } from 'react-icons/bs';
 import { timeSince } from '../lib/timeAndDateHelper';
 import { ShareIcon } from '@heroicons/react/solid';
 import { MenuIcon } from '@heroicons/react/outline';
+import { useRecoilValue } from 'recoil';
+import { subredditIdState } from '../atoms/subredditAtom';
 
 Modal.setAppElement('#__next');
 
 function ListPostItem({ post, id }) {
     const [open, setOpen] = useState(false);
+    const selectedSubreddit = useRecoilValue(subredditIdState);
 
     const handleClick = () => {
         setOpen(true);
@@ -22,37 +25,39 @@ function ListPostItem({ post, id }) {
                 <p className="text-xs hidden md:inline">{id}</p>
                 <ItemVote item={post} />
             </div>
-            <div
-                className="col-span-9 flex space-x-2 cursor-pointer"
-                onClick={handleClick}>
+            <div className="col-span-11 flex space-x-2 cursor-pointer" onClick={handleClick}>
                 {post.data.thumbnail == 'self' ? (
                     <MenuIcon className="w-14 h-14 border" />
                 ) : (
-                    <img
-                        className="h-16 w-16 cursor-pointer"
-                        src={post.data.thumbnail}
-                        alt=""
-                    />
+                    <img className="h-16 w-16 cursor-pointer" src={post.data.thumbnail} alt="" />
                 )}
-                <div className="flex flex-col truncate max-w-screen-lg">
+                <div className="flex flex-col truncate xl:max-w-screen-lg sm:max-w-screen-md :">
                     <div className="flex space-x-2">
-                        {post.data.post_hint == 'link' &&
-                            post.data.crosspost_parent && (
-                                <div className="flex bg-orange-500 rounded-full text-white px-2 text-sm items-center space-x-1">
-                                    <ShareIcon className="w-4 h-4" />
-                                </div>
-                            )}
-                        <p
-                            key={post.data.id}
-                            className="text-white cursor-pointer">
+                        {post.data.post_hint == 'link' && post.data.crosspost_parent && (
+                            <div className="flex bg-orange-500 rounded-full text-white px-2 text-sm items-center space-x-1">
+                                <ShareIcon className="w-4 h-4" />
+                            </div>
+                        )}
+                        <p key={post.data.id} className="text-white cursor-pointer">
                             {post.data.title}
                         </p>
                     </div>
                     <div className="flex text-sm space-x-1">
-                        <p>Posted by </p>
-                        <p className="cursor-pointer hover:text-white">
-                            {`${post.data.author}`}
-                        </p>
+                        {selectedSubreddit ? (
+                            <>
+                                <p>Posted by</p>
+                                <p className="cursor-pointer hover:text-white hover:underline">{`${post.data.author}`}</p>
+                            </>
+                        ) : (
+                            <>
+                                <p>Posted to</p>
+                                <p className="cursor-pointer text-orange-200 hover:text-orange-100 hover:underline">
+                                    {post.data.subreddit_name_prefixed}
+                                </p>
+                                <p>by</p>
+                                <p className="cursor-pointer hover:text-white hover:underline">{`${post.data.author}`}</p>
+                            </>
+                        )}
                         <p>·</p>
                         <p>{timeSince(new Date(post.data.created * 1000))}</p>
                         {post.data.stickied ? (
@@ -61,16 +66,15 @@ function ListPostItem({ post, id }) {
                             ''
                         )}
                     </div>
+                    <div className="flex text-sm space-x-4">
+                        <p className="hover:text-white cursor-pointer">
+                            {post.data.num_comments} Comments
+                        </p>
+                        <p className="hover:text-white cursor-pointer">Save</p>
+                        <p className="hover:text-white cursor-pointer">Share</p>
+                        <p className="hover:text-white cursor-pointer">Hide</p>
+                    </div>
                 </div>
-            </div>
-
-            <div className="col-span-2 grid grid-cols-2 grid-rows-2 items-center justify-items-center ml-auto md:ml-0 text-sm">
-                <p className="hover:text-white cursor-pointer">Share</p>
-                <p className="hover:text-white cursor-pointer">Save</p>
-                <p className="hover:text-white cursor-pointer">
-                    {post.data.num_comments} Comments
-                </p>
-                <p className="hover:text-white cursor-pointer">Hide</p>
             </div>
 
             <Modal
@@ -85,8 +89,8 @@ function ListPostItem({ post, id }) {
                 closeTimeoutMS={200}
                 style={{
                     overlay: {
-                        backgroundColor: 'rgba(0,0,0,0.75',
-                    },
+                        backgroundColor: 'rgba(0,0,0,0.75)'
+                    }
                 }}>
                 <ModalPost post={post} />
             </Modal>

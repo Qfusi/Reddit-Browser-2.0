@@ -4,18 +4,14 @@ import { useEffect, useState } from 'react';
 import { useRecoilState } from 'recoil';
 import {
     fetchMySubscriptions,
-    FETCH_MY_SUBSCRIPTIONS_SUCCESS,
+    FETCH_MY_SUBSCRIPTIONS_SUCCESS
 } from '../actions/fetchMySubscriptions';
-import {
-    subredditClickedState,
-    subredditIdState,
-} from '../atoms/subredditAtom';
+import { subredditClickedState, subredditIdState } from '../atoms/subredditAtom';
 
 function Sidebar() {
     const { data: session } = useSession();
     const [subreddits, setSubreddits] = useState([]);
-    const [selectedSubreddit, setSelectedSubreddit] =
-        useRecoilState(subredditIdState);
+    const [selectedSubreddit, setSelectedSubreddit] = useRecoilState(subredditIdState);
     const [, setSubredditClicked] = useRecoilState(subredditClickedState);
 
     useEffect(() => {
@@ -24,7 +20,7 @@ function Sidebar() {
                 var res = await fetchMySubscriptions(session.user.accessToken);
                 if (res.type === FETCH_MY_SUBSCRIPTIONS_SUCCESS) {
                     const subreddits = res.payload.sort((a, b) =>
-                        a.data.display_name.localeCompare(b.data.display_name),
+                        a.data.display_name.localeCompare(b.data.display_name)
                     );
                     setSubreddits(() => [...subreddits]);
                 }
@@ -40,7 +36,16 @@ function Sidebar() {
             className="text-gray-500 p-5 text-xs lg:text-sm border-r border-gray-900
         overflow-y-scroll h-screen scrollbar-hide sm:max-w-[12rem] lg:max-w-[15rem] hidden md:inline-flex pb-36">
             <div className="space-y-4">
-                <button className="flex items-center space-x-2 hover:text-white">
+                <button
+                    className={`flex items-center space-x-2 hover:text-white ${
+                        !selectedSubreddit && 'text-orange-500'
+                    }`}
+                    onClick={() => {
+                        if (selectedSubreddit) {
+                            setSelectedSubreddit('');
+                            setSubredditClicked(true);
+                        }
+                    }}>
                     <HomeIcon className="h-5 w-5" />
                     <p>Home</p>
                 </button>
@@ -51,16 +56,10 @@ function Sidebar() {
                         <p
                             key={subreddit.data.id}
                             className={`cursor-pointer hover:text-white
-                    ${
-                        subreddit.data.id == selectedSubreddit.id
-                            ? 'text-orange-500'
-                            : ''
-                    }
+                    ${subreddit.data.id == selectedSubreddit.id ? 'text-orange-500' : ''}
                     `}
                             onClick={() => {
-                                if (
-                                    subreddit.data.id !== selectedSubreddit.id
-                                ) {
+                                if (subreddit.data.id !== selectedSubreddit.id) {
                                     setSelectedSubreddit(subreddit.data);
                                     setSubredditClicked(true);
                                 }

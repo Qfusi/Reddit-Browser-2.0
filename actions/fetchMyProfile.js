@@ -8,26 +8,23 @@ const FETCH_MY_PROFILE_FAILURE = 'FETCH_MY_PROFILE_FAILURE';
 const fetchMyProfileSuccess = (data) => {
     return {
         type: FETCH_MY_PROFILE_SUCCESS,
-        payload: data,
+        payload: data
     };
 };
 
 const fetchMyProfileFailure = (error) => {
     return {
         type: FETCH_MY_PROFILE_FAILURE,
-        payload: error,
+        payload: error
     };
 };
 
 async function fetchMyProfile(token) {
-    var response = await axios.get(
-        `https://oauth.reddit.com/api/v1/me?raw_json=1`,
-        {
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-        },
-    );
+    var response = await axios.get(`https://oauth.reddit.com/api/v1/me?raw_json=1`, {
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+    });
 
     return new Promise(function (resolve, reject) {
         try {

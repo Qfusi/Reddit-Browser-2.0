@@ -13,9 +13,7 @@ function Login({ providers }) {
                 <div key={provider.id}>
                     <button
                         className="bg-[#FF4500] p-5 rounded-xl text-white"
-                        onClick={() =>
-                            signIn(provider.id, { callbackUrl: '/' })
-                        }>
+                        onClick={() => signIn(provider.id, { callbackUrl: '/' })}>
                         Login with {provider.name}
                     </button>
                 </div>
@@ -29,7 +27,7 @@ export default Login;
 export async function getServerSideProps() {
     return {
         props: {
-            providers: await getProviders(),
-        },
+            providers: await getProviders()
+        }
     };
 }

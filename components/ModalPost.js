@@ -26,9 +26,7 @@ function ModalPost({ post }) {
                         )}
                         <p>{post.data.subreddit_name_prefixed}</p>
                         <p>·</p>
-                        <p className="cursor-pointer hover:text-white">
-                            {post.data.author}
-                        </p>
+                        <p className="cursor-pointer hover:text-white">{post.data.author}</p>
                         <p>·</p>
                         <p>{timeSince(new Date(post.data.created * 1000))}</p>
                     </div>
@@ -40,11 +38,7 @@ function ModalPost({ post }) {
             </div>
 
             <div className="m-4 space-y-4">
-                {crossposted && (
-                    <CrosspostedContent
-                        post={post.data.crosspost_parent_list}
-                    />
-                )}
+                {crossposted && <CrosspostedContent post={post.data.crosspost_parent_list} />}
 
                 {post.data.is_self && post.data.selftext.length > 0 ? (
                     <div className="p-4 bg-zinc-900 rounded-lg text-gray-300 text-sm">
@@ -54,9 +48,7 @@ function ModalPost({ post }) {
                     <></>
                 )}
 
-                {!crossposted && !post.data.is_self && (
-                    <Player post={post.data} />
-                )}
+                {!crossposted && !post.data.is_self && <Player post={post.data} />}
 
                 <div className="flex justify-center items-center bg-zinc-900 h-52 rounded-lg">
                     <textarea
@@ -65,10 +57,7 @@ function ModalPost({ post }) {
                     />
                 </div>
 
-                <Comments
-                    id={post.data.id}
-                    subreddit={post.data.subreddit_name_prefixed}
-                />
+                <Comments id={post.data.id} subreddit={post.data.subreddit_name_prefixed} />
             </div>
         </div>
     );
