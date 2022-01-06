@@ -27,16 +27,18 @@ async function fetchPosts(token, subreddit, sort, sortTop) {
             {
                 headers: {
                     Authorization: `Bearer ${token}`
-                }
+                },
+                timeout: 5000
             }
         );
     } else {
         response = await axios.get(
-            `https://oauth.reddit.com/${sort}?limit=75&t=${sortTop}&raw_json=1`,
+            `https://oauth.reddit.com/${sort}?limit=75&t=${sortTop}&raw_json=1`, //TODO
             {
                 headers: {
                     Authorization: `Bearer ${token}`
-                }
+                },
+                timeout: 5000
             }
         );
     }

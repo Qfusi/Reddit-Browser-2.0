@@ -7,7 +7,7 @@ export const subredditIdState = atom({
 
 export const subredditClickedState = atom({
     key: 'subredditClickedState',
-    default: false
+    default: true
 });
 
 export const subSortState = atom({

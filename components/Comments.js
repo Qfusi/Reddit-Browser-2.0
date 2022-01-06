@@ -2,6 +2,7 @@ import { useSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
 import { fetchComments, FETCH_COMMENTS_SUCCESS } from '../actions/fetchComments';
 import Comment from './Comment';
+import LinearProgress from '@mui/material/LinearProgress';
 
 function Comments({ id, subreddit }) {
     const { data: session } = useSession();
@@ -24,14 +25,17 @@ function Comments({ id, subreddit }) {
     }, [session, subreddit]);
 
     return (
-        <div className="bg-zinc-900 rounded-lg p-4 space-y-2">
-            {comments.length ? (
-                comments.map((comment, i) => (
-                    <Comment key={comment.data.id} comment={comment} id={i + 1} />
-                ))
-            ) : (
-                <p>loading comments..</p>
-            )}
+        <div className="bg-zinc-900 rounded-lg overflow-hidden">
+            {comments.length ? <div className="h-1"></div> : <LinearProgress color="warning" />}
+            <div className="px-4 space-y-2 mt-3">
+                {comments.length ? (
+                    comments.map((comment, i) => (
+                        <Comment key={comment.data.id} comment={comment} id={i + 1} />
+                    ))
+                ) : (
+                    <div></div>
+                )}
+            </div>
         </div>
     );
 }

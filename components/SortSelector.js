@@ -29,7 +29,7 @@ export default function SortSelector() {
                 leaveFrom="opacity-100 translate-x-0"
                 leaveTo="opacity-0 translate-x-10">
                 <div className="duration">
-                    <Menu as="div" className="relative inline-block text-left w-32  z-10">
+                    <Menu as="div" className="relative inline-block text-left w-32">
                         <div className="text-sm text-center space-y-1">
                             <p>Posts from</p>
                             <Menu.Button
@@ -56,7 +56,7 @@ export default function SortSelector() {
                             <Menu.Items
                                 className="origin-top-right absolute right-0 mt-2 w-28 py-1
                 rounded-md border border-gray-800 bg-black ring-1 ring-black
-                ring-opacity-5 focus:outline-none">
+                ring-opacity-5 focus:outline-none z-10">
                                 <Menu.Item>
                                     {({ active }) => (
                                         <a
@@ -178,7 +178,7 @@ export default function SortSelector() {
             </Transition>
 
             {/* Sort by selector */}
-            <Menu as="div" className="relative inline-block text-left z-10">
+            <Menu as="div" className="relative inline-block text-left">
                 <div className="text-sm text-center space-y-1">
                     <p>Sort by</p>
                     <Menu.Button
@@ -202,7 +202,7 @@ export default function SortSelector() {
                     <Menu.Items
                         className="origin-top-right absolute right-0 mt-2 w-16 py-1
                 rounded-md border border-gray-800 bg-black ring-1 ring-black
-                ring-opacity-5 focus:outline-none">
+                ring-opacity-5 focus:outline-none z-10">
                         <Menu.Item>
                             {({ active }) => (
                                 <a

@@ -1,10 +1,11 @@
 import { useSession } from 'next-auth/react';
-import { useEffect, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { fetchPosts, FETCH_POSTS_SUCCESS } from '../actions/fetchPosts';
 import { subredditClickedState, subSortState, subTopSortState } from '../atoms/subredditAtom';
 import ListPostItem from './ListPostItem';
 import LinearProgress from '@mui/material/LinearProgress';
+import { Transition } from '@headlessui/react';
 
 function Posts({ subreddit }) {
     const { data: session } = useSession();
@@ -24,10 +25,11 @@ function Posts({ subreddit }) {
                 );
                 if (res.type === FETCH_POSTS_SUCCESS) {
                     setPosts(() => [...res.payload]);
-                    setloadingPosts(false);
                 }
+                setloadingPosts(false);
             } catch (err) {
-                console.log(`${err.type} - ${err.payload?.stack}`);
+                setloadingPosts(false);
+                setPosts([]);
             }
         }
         fetchData();
@@ -42,7 +44,23 @@ function Posts({ subreddit }) {
                         <ListPostItem key={post.data.id} post={post} id={i + 1} />
                     ))
                 ) : (
-                    <p>loading posts...</p>
+                    <div className="flex h-60 items-center justify-center">
+                        <Transition
+                            as={Fragment}
+                            show={!loadingPosts}
+                            appear={true}
+                            enter="transition ease-out duration-1000"
+                            enterFrom="opacity-0 -translate-y-20"
+                            enterTo="opacity-100 translate-y-0"
+                            leave="transition ease-out duration-500"
+                            leaveFrom="opacity-100 translate-y-0"
+                            leaveTo="opacity-0 -translate-y-20">
+                            <div className="flex flex-col h-24 px-6 items-center justify-center text-black text-lg bg-red-500 rounded-full">
+                                <p>Something went wrong</p>
+                                <p>(╯°□°)╯︵ ┻━┻</p>
+                            </div>
+                        </Transition>
+                    </div>
                 )}
             </div>
         </>
