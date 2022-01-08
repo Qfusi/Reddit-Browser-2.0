@@ -1,14 +1,16 @@
 import { timeSince } from '../lib/timeAndDateHelper';
 import ItemVote from './ItemVote';
 import Comments from './Comments';
-import Player from './Player';
+import MediaContent from './MediaContent';
 import { useState } from 'react';
 import CrosspostedContent from './CrosspostedContent';
 import { ShareIcon } from '@heroicons/react/outline';
+import styles from '../styles/ModalPost.module.css';
+import DOMPurify from 'dompurify';
 
 function ModalPost({ post }) {
     const [crossposted] = useState(post.data.crosspost_parent);
-    // console.log(post);
+    console.log(post);
 
     return (
         <div>
@@ -40,15 +42,17 @@ function ModalPost({ post }) {
             <div className="m-4 space-y-4">
                 {crossposted && <CrosspostedContent post={post.data.crosspost_parent_list} />}
 
-                {post.data.is_self && post.data.selftext.length > 0 ? (
-                    <div className="p-4 bg-zinc-900 rounded-lg text-gray-300 text-sm">
-                        <p>{post.data.selftext}</p>
-                    </div>
+                {post.data.is_self && post.data.selftext_html.length > 0 ? (
+                    <div
+                        className={`${styles.body} p-4 bg-zinc-900 rounded-lg text-gray-300 text-sm`}
+                        dangerouslySetInnerHTML={{
+                            __html: DOMPurify.sanitize(post.data.selftext_html)
+                        }}></div>
                 ) : (
                     <></>
                 )}
 
-                {!crossposted && !post.data.is_self && <Player post={post.data} />}
+                {!crossposted && !post.data.is_self && <MediaContent post={post.data} />}
 
                 <div className="flex justify-center items-center bg-zinc-900 h-52 rounded-lg">
                     <textarea

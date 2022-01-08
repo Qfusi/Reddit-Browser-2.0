@@ -6,6 +6,8 @@ import ItemVote from './ItemVote';
 import { timeSince } from '../lib/timeAndDateHelper';
 import { BsPinAngle } from 'react-icons/bs';
 import { PlusSmIcon } from '@heroicons/react/solid';
+import styles from '../styles/Comment.module.css';
+import DOMPurify from 'dompurify';
 
 function Comment({ comment }) {
     const { data: session } = useSession();
@@ -84,7 +86,11 @@ function Comment({ comment }) {
                             )}{' '}
                             {/*TODO*/}
                         </div>
-                        <p className="text-sm">{comment.data.body}</p>
+                        <div
+                            className={`${styles.comment} text-sm`}
+                            dangerouslySetInnerHTML={{
+                                __html: DOMPurify.sanitize(comment.data.body_html)
+                            }}></div>
                         <ItemVote item={comment} horizontal={true} />
                     </div>
                 </>

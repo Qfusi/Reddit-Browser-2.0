@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { timeSince } from '../lib/timeAndDateHelper';
-import Player from './Player';
+import MediaContent from './MediaContent';
 
 function CrosspostedContent({ post }) {
     const [selectedPost] = useState(post[0]);
@@ -20,7 +20,7 @@ function CrosspostedContent({ post }) {
                     {selectedPost.title}
                 </p>
             </div>
-            <Player post={selectedPost} />
+            <MediaContent post={selectedPost} />
             <div className="flex space-x-2 px-3 py-1">
                 <p>{selectedPost.score} points</p>
                 <p>·</p>

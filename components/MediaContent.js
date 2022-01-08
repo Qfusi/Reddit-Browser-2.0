@@ -1,11 +1,13 @@
 import { useEffect, useState } from 'react';
 import ReactImageGallery from 'react-image-gallery';
-import ReactPlayer from 'react-player';
 import 'react-image-gallery/styles/css/image-gallery.css';
+import TweetEmbed from 'react-tweet-embed';
+import TwitchContent from './content/TwitchContent';
+import GeneralMediaContent from './content/GeneralMediaContent';
 
-function Player({ post }) {
+function MediaContent({ post }) {
+    const [mediaType, setMediaType] = useState();
     const [media, setMedia] = useState();
-    const [isPlaying] = useState(true);
     const [gallery, setGallery] = useState([]);
 
     useEffect(() => {
@@ -17,30 +19,36 @@ function Player({ post }) {
 
         if (post.post_hint == 'image') {
             // console.log('image');
+            setMediaType('image');
         } else if (endsWithAny(['gifv'])) {
-            // console.log("gifv");
+            // console.log('gifv');
+            setMediaType('media');
             setMedia({
                 url: post.url.substr(0, post.url.lastIndexOf('.')) + '.mp4',
                 w: post.preview?.reddit_video_preview?.width,
                 h: post.preview?.reddit_video_preview?.height
             });
         } else if (post.post_hint == 'hosted:video') {
-            // console.log("reddit hosted");
+            // console.log('reddit hosted');
+            setMediaType('media');
             setMedia({
                 url: post.media.reddit_video.hls_url,
                 w: post.media.reddit_video.width,
                 h: post.media.reddit_video.height
             });
         } else if (post.post_hint == 'rich:video') {
-            // console.log("rich hosted");
+            // console.log('rich hosted');
+            setMediaType('media');
             setMedia({
                 url: post.url
             });
         } else if (post.gallery_data) {
+            // console.log('gallery');
             if (Object.entries(post.media_metadata)?.length == gallery.length) {
                 return;
             }
 
+            setMediaType('gallery');
             for (const [, value] of Object.entries(post.media_metadata)) {
                 setGallery((oldArr) => [
                     ...oldArr,
@@ -51,8 +59,19 @@ function Player({ post }) {
                     }
                 ]);
             }
+        } else if (post.post_hint === 'link') {
+            if (post.secure_media?.type?.includes('twitter')) {
+                setMediaType('twitter');
+                // console.log('twitter');
+            } else if (post.secure_media?.type?.includes('twitch')) {
+                setMediaType('twitch');
+                // console.log('twitch');
+            } else {
+                // console.log('link');
+            }
         } else {
-            // console.log("else");
+            console.log('else');
+            setMediaType('media');
             setMedia({
                 url: post.media?.reddit_video?.hls_url ?? post.url,
                 w: post.media?.reddit_video?.width,
@@ -63,18 +82,23 @@ function Player({ post }) {
 
     return (
         <div className="flex justify-center bg-black">
-            {media && (
-                <ReactPlayer
-                    url={media.url}
-                    playing={isPlaying}
-                    loop
-                    loaded
-                    controls
-                    height={media.h ?? 550}
-                    width={media.w ?? 2000}
+            {mediaType === 'image' && (
+                <img
+                    className="max-h-screen w-auto h-auto max-w-2xl rounded-lg"
+                    src={post.url}
+                    alt=""
                 />
             )}
-            {gallery.length > 0 && (
+            {mediaType === 'media' && <GeneralMediaContent media={media} />}
+            {mediaType === 'twitch' && <TwitchContent post={post} />}
+            {mediaType === 'twitter' && (
+                <TweetEmbed
+                    className="w-full"
+                    id={post.secure_media?.oembed?.url?.split('/')[5]}
+                    options={{ theme: 'dark', width: '550px', align: 'center' }}
+                />
+            )}
+            {mediaType === 'gallery' && gallery.length > 0 && (
                 <ReactImageGallery
                     items={gallery}
                     showPlayButton={false}
@@ -82,15 +106,8 @@ function Player({ post }) {
                     showBullets={true}
                 />
             )}
-            {!media && gallery && (
-                <img
-                    className="max-h-screen w-auto h-auto max-w-2xl rounded-lg"
-                    src={post.url}
-                    alt=""
-                />
-            )}
         </div>
     );
 }
 
-export default Player;
+export default MediaContent;
