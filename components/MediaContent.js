@@ -70,7 +70,7 @@ function MediaContent({ post }) {
                 // console.log('link');
             }
         } else {
-            console.log('else');
+            // console.log('else');
             setMediaType('media');
             setMedia({
                 url: post.media?.reddit_video?.hls_url ?? post.url,
