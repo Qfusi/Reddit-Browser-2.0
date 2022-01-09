@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 import axios from 'axios';
 import NextAuth from 'next-auth';
 import RedditProvider from 'next-auth/providers/reddit';

@@ -5,7 +5,7 @@ import ModalPost from './ModalPost';
 import { BsPinAngle } from 'react-icons/bs';
 import { timeSince } from '../lib/timeAndDateHelper';
 import { ShareIcon } from '@heroicons/react/solid';
-import { MenuIcon } from '@heroicons/react/outline';
+import { ExternalLinkIcon, MenuIcon } from '@heroicons/react/outline';
 import { useRecoilValue } from 'recoil';
 import { subredditIdState } from '../atoms/subredditAtom';
 
@@ -15,19 +15,19 @@ function ListPostItem({ post, id }) {
     const [open, setOpen] = useState(false);
     const selectedSubreddit = useRecoilValue(subredditIdState);
 
-    const handleClick = () => {
-        setOpen(true);
+    const handleClick = (e) => {
+        if (e.target.id !== 'hyperlink') setOpen(true);
     };
 
     return (
         <div className="grid grid-cols-12 text-gray-500 py-2 px-4 hover:bg-gray-900 rounded-lg">
             <div className="flex items-center pr-8 justify-between">
-                <p className="text-xs hidden md:inline">{id}</p>
+                <p className="text-xs hidden 2lg:inline">{id}</p>
                 <ItemVote item={post} />
             </div>
             <div className="col-span-11 flex space-x-2 cursor-pointer" onClick={handleClick}>
                 {post.data.thumbnail == 'self' ? (
-                    <MenuIcon className="w-14 h-14 border" />
+                    <MenuIcon className="w-[70px] h-[70px] border" />
                 ) : (
                     <img
                         className="h-[70px] w-[70px] cursor-pointer"
@@ -35,8 +35,11 @@ function ListPostItem({ post, id }) {
                         alt=""
                     />
                 )}
-                <div className="flex flex-col truncate xl:max-w-screen-lg sm:max-w-screen-md :">
-                    <div className="flex space-x-2">
+                <div className="flex flex-col grow">
+                    <div
+                        className="flex space-x-2 truncate
+                    max-w-xs md:max-w-md lg:max-w-screen-sm
+                    xl:max-w-screen-md 2xl:max-w-screen-lg">
                         {post.data.post_hint == 'link' && post.data.crosspost_parent && (
                             <div className="flex bg-orange-500 rounded-full text-white px-2 text-sm items-center space-x-1">
                                 <ShareIcon className="w-4 h-4" />
@@ -70,13 +73,26 @@ function ListPostItem({ post, id }) {
                             ''
                         )}
                     </div>
-                    <div className="flex text-sm space-x-4">
-                        <p className="hover:text-white cursor-pointer">
-                            {post.data.num_comments} Comments
-                        </p>
-                        <p className="hover:text-white cursor-pointer">Save</p>
-                        <p className="hover:text-white cursor-pointer">Share</p>
-                        <p className="hover:text-white cursor-pointer">Hide</p>
+                    <div className="flex justify-between">
+                        <div className="flex text-sm space-x-4">
+                            <p className="hover:text-white cursor-pointer">
+                                {post.data.num_comments} Comments
+                            </p>
+                            <p className="hover:text-white cursor-pointer">Save</p>
+                            <p className="hover:text-white cursor-pointer">Share</p>
+                            <p className="hover:text-white cursor-pointer">Hide</p>
+                        </div>
+                        <a
+                            href={post.data.url}
+                            target="_blank"
+                            rel="noreferrer"
+                            id="hyperlink"
+                            className="flex text-xs items-center hover:text-blue-300">
+                            ({post.data.domain})
+                            <span>
+                                <ExternalLinkIcon className="ml-2 h-4 w-4" />
+                            </span>
+                        </a>
                     </div>
                 </div>
             </div>
