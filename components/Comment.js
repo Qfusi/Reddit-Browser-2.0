@@ -9,7 +9,7 @@ import { PlusSmIcon } from '@heroicons/react/solid';
 import styles from '../styles/Comment.module.css';
 import DOMPurify from 'dompurify';
 
-function Comment({ comment }) {
+function Comment({ comment, isPostAuthor }) {
     const { data: session } = useSession();
     const [collapsed, setCollapsed] = useState(false);
     const [author, setAuthor] = useState(null);
@@ -48,7 +48,14 @@ function Comment({ comment }) {
                         src={author?.icon_img ?? author?.snoovatar_img}
                         alt=""
                     />
-                    <p className="cursor-pointer hover:underline">{comment.data.author}</p>
+                    <p
+                        className={`cursor-pointer ${
+                            isPostAuthor
+                                ? 'px-2 bg rounded-lg bg-blue-800 hover:bg-blue-600'
+                                : 'text-blue-500 hover:underline'
+                        }`}>
+                        {comment.data.author}
+                    </p>
                     <p className="text-xs text-gray-500">
                         · {timeSince(new Date(comment.data.created * 1000))}
                     </p>
@@ -70,7 +77,14 @@ function Comment({ comment }) {
 
                     <div className="col-span-11 flex flex-col mb-3 items-start space-y-1">
                         <div className="flex items-center space-x-2">
-                            <p className="cursor-pointer hover:underline">{comment.data.author}</p>
+                            <p
+                                className={`cursor-pointer ${
+                                    isPostAuthor
+                                        ? 'px-2 bg rounded-lg bg-blue-800 hover:bg-blue-600'
+                                        : 'text-blue-500 hover:underline'
+                                }`}>
+                                {comment.data.author}
+                            </p>
                             <p className="text-xs text-gray-500">
                                 · {timeSince(new Date(comment.data.created * 1000))}
                             </p>
@@ -84,10 +98,9 @@ function Comment({ comment }) {
                             ) : (
                                 ''
                             )}{' '}
-                            {/*TODO*/}
                         </div>
                         <div
-                            className={`${styles.comment} text-sm`}
+                            className={`${styles.comment} text-sm pb-2`}
                             dangerouslySetInnerHTML={{
                                 __html: DOMPurify.sanitize(comment.data.body_html)
                             }}></div>

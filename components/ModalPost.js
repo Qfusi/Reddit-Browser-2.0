@@ -10,7 +10,6 @@ import DOMPurify from 'dompurify';
 
 function ModalPost({ post }) {
     const [crossposted] = useState(post.data.crosspost_parent);
-
     return (
         <div>
             <div className="flex">
@@ -27,7 +26,9 @@ function ModalPost({ post }) {
                         )}
                         <p>{post.data.subreddit_name_prefixed}</p>
                         <p>·</p>
-                        <p className="cursor-pointer hover:text-white">{post.data.author}</p>
+                        <p className="cursor-pointer text-blue-500 hover:underline">
+                            {post.data.author}
+                        </p>
                         <p>·</p>
                         <p>{timeSince(new Date(post.data.created * 1000))}</p>
                     </div>
@@ -60,7 +61,11 @@ function ModalPost({ post }) {
                     />
                 </div>
 
-                <Comments id={post.data.id} subreddit={post.data.subreddit_name_prefixed} />
+                <Comments
+                    id={post.data.id}
+                    subreddit={post.data.subreddit_name_prefixed}
+                    author={post.data.author}
+                />
             </div>
         </div>
     );

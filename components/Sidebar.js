@@ -1,4 +1,5 @@
 import { HomeIcon } from '@heroicons/react/outline';
+import { CircularProgress } from '@mui/material';
 import { useSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
 import { useRecoilState } from 'recoil';
@@ -34,7 +35,8 @@ function Sidebar() {
     return (
         <div
             className="text-gray-500 p-5 text-xs lg:text-sm border-r border-gray-900
-        overflow-y-scroll h-screen scrollbar-hide sm:max-w-[12rem] lg:max-w-[15rem] hidden md:inline-flex pb-36">
+        overflow-y-scroll h-screen scrollbar-hide hidden md:inline-flex pb-36
+        sm:max-w-[12rem] lg:max-w-[15rem]">
             <div className="space-y-4">
                 <button
                     className={`flex items-center space-x-2 hover:text-white ${
@@ -68,7 +70,10 @@ function Sidebar() {
                         </p>
                     ))
                 ) : (
-                    <p>loading subreddits...</p>
+                    <div className="flex flex-col justify-center items-center space-y-7">
+                        <p>loading subreddits...</p>
+                        <CircularProgress color="warning" />
+                    </div>
                 )}
             </div>
         </div>

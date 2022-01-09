@@ -4,7 +4,7 @@ import { fetchComments, FETCH_COMMENTS_SUCCESS } from '../actions/fetchComments'
 import Comment from './Comment';
 import LinearProgress from '@mui/material/LinearProgress';
 
-function Comments({ id, subreddit }) {
+function Comments({ id, subreddit, author }) {
     const { data: session } = useSession();
     const [comments, setComments] = useState([]);
     const [sort] = useState('top');
@@ -30,7 +30,12 @@ function Comments({ id, subreddit }) {
             <div className="px-4 space-y-2 mt-3">
                 {comments.length ? (
                     comments.map((comment, i) => (
-                        <Comment key={comment.data.id} comment={comment} id={i + 1} />
+                        <Comment
+                            key={comment.data.id}
+                            comment={comment}
+                            isPostAuthor={author === comment.data.author}
+                            id={i + 1}
+                        />
                     ))
                 ) : (
                     <div></div>
