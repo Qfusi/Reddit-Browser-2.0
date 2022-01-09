@@ -42,7 +42,7 @@ function ModalPost({ post }) {
             <div className="m-4 space-y-4">
                 {crossposted && <CrosspostedContent post={post.data.crosspost_parent_list} />}
 
-                {post.data.is_self && post.data.selftext_html.length > 0 ? (
+                {post.data.is_self && post.data.selftext_html?.length > 0 ? (
                     <div
                         className={`${styles.body} p-4 bg-zinc-900 rounded-lg text-gray-300 text-sm`}
                         dangerouslySetInnerHTML={{

@@ -29,7 +29,11 @@ function ListPostItem({ post, id }) {
                 {post.data.thumbnail == 'self' ? (
                     <MenuIcon className="w-14 h-14 border" />
                 ) : (
-                    <img className="h-16 w-16 cursor-pointer" src={post.data.thumbnail} alt="" />
+                    <img
+                        className="h-[70px] w-[70px] cursor-pointer"
+                        src={post.data.thumbnail}
+                        alt=""
+                    />
                 )}
                 <div className="flex flex-col truncate xl:max-w-screen-lg sm:max-w-screen-md :">
                     <div className="flex space-x-2">

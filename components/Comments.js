@@ -29,14 +29,16 @@ function Comments({ id, subreddit, author }) {
             {comments.length ? <div className="h-1"></div> : <LinearProgress color="warning" />}
             <div className="px-4 space-y-2 mt-3">
                 {comments.length ? (
-                    comments.map((comment, i) => (
-                        <Comment
-                            key={comment.data.id}
-                            comment={comment}
-                            isPostAuthor={author === comment.data.author}
-                            id={i + 1}
-                        />
-                    ))
+                    comments
+                        .filter((comment) => comment.data.author)
+                        .map((comment, i) => (
+                            <Comment
+                                key={comment.data.id}
+                                comment={comment}
+                                isPostAuthor={author === comment.data.author}
+                                id={i + 1}
+                            />
+                        ))
                 ) : (
                     <div></div>
                 )}
