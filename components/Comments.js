@@ -27,7 +27,7 @@ function Comments({ id, subreddit, author }) {
     return (
         <div className="bg-zinc-900 rounded-lg overflow-hidden">
             {comments.length ? <div className="h-1"></div> : <LinearProgress color="warning" />}
-            <div className="px-4 space-y-2 mt-3">
+            <div className="px-4 space-y-3 mt-3">
                 {comments.length ? (
                     comments
                         .filter((comment) => comment.data.author)

@@ -98,8 +98,11 @@ function ListPostItem({ post, id }) {
             </div>
 
             <Modal
-                className="text-gray-500 absolute inset-x-56 inset-y-0 bg-black p-4 
-            outline-none overflow-auto border-x border-gray-900 rounded-md scrollbar-hide"
+                className="text-gray-500 absolute bg-black p-4 outline-none overflow-auto 
+                border-x border-gray-900 rounded-md scrollbar-hide inset-y-0
+                2xl:inset-x-56 xl:inset-x-44
+                lg:inset-x-40 md:inset-x-20
+                md:w-auto w-screen"
                 isOpen={open}
                 onRequestClose={() => {
                     if (open) {
