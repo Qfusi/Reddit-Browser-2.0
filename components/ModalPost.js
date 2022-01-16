@@ -10,6 +10,7 @@ import DOMPurify from 'dompurify';
 
 function ModalPost({ post }) {
     const [crossposted] = useState(post.data.crosspost_parent);
+
     return (
         <div>
             <div className="flex">

@@ -4,6 +4,7 @@ import 'react-image-gallery/styles/css/image-gallery.css';
 import TweetEmbed from 'react-tweet-embed';
 import TwitchContent from './content/TwitchContent';
 import GeneralMediaContent from './content/GeneralMediaContent';
+import DOMPurify from 'dompurify';
 
 function MediaContent({ post }) {
     const [mediaType, setMediaType] = useState();
@@ -38,10 +39,15 @@ function MediaContent({ post }) {
             });
         } else if (post.post_hint == 'rich:video') {
             // console.log('rich hosted');
-            setMediaType('media');
-            setMedia({
-                url: post.url
-            });
+
+            if (post.secure_media?.type?.includes('gfycat')) {
+                setMediaType('gfycat');
+            } else {
+                setMediaType('media');
+                setMedia({
+                    url: post.url
+                });
+            }
         } else if (post.gallery_data) {
             // console.log('gallery');
             if (Object.entries(post.media_metadata)?.length == gallery.length) {
@@ -90,6 +96,16 @@ function MediaContent({ post }) {
                 />
             )}
             {mediaType === 'media' && <GeneralMediaContent media={media} />}
+            {mediaType === 'gfycat' && (
+                <div
+                    className="flex justify-center"
+                    dangerouslySetInnerHTML={{
+                        __html: DOMPurify.sanitize(post.secure_media?.oembed?.html, {
+                            ADD_TAGS: ['iframe'],
+                            ADD_ATTR: ['allow', 'allowfullscreen', 'frameborder', 'scrolling']
+                        })
+                    }}></div>
+            )}
             {mediaType === 'twitch' && <TwitchContent post={post} />}
             {mediaType === 'twitter' && (
                 <TweetEmbed
