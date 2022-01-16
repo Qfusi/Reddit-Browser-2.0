@@ -6,18 +6,38 @@ import { BsPinAngle } from 'react-icons/bs';
 import { timeSince } from '../lib/timeAndDateHelper';
 import { ShareIcon } from '@heroicons/react/solid';
 import { ExternalLinkIcon, MenuIcon } from '@heroicons/react/outline';
-import { useRecoilValue } from 'recoil';
-import { subredditIdState } from '../atoms/subredditAtom';
+import { useRecoilState } from 'recoil';
+import { subredditClickedState, subredditIdState } from '../atoms/subredditAtom';
+import { fetchSubreddit, FETCH_SUBREDDIT_SUCCESS } from '../actions/fetchSubreddit';
+import { useSession } from 'next-auth/react';
 
 Modal.setAppElement('#__next');
 
 function ListPostItem({ post, id }) {
+    const { data: session } = useSession();
     const [open, setOpen] = useState(false);
-    const selectedSubreddit = useRecoilValue(subredditIdState);
+    const [selectedSubreddit, setSelectedSubreddit] = useRecoilState(subredditIdState);
+    const [, setSubredditClicked] = useRecoilState(subredditClickedState);
 
     const handleClick = (e) => {
-        if (e.target.id !== 'hyperlink') setOpen(true);
+        if (e.target.id !== 'hyperlink' && !e.target.id.includes('subreddit')) setOpen(true);
     };
+
+    async function handleSubredditClick() {
+        try {
+            var res = await fetchSubreddit(
+                session.user.accessToken,
+                post.data.subreddit_name_prefixed
+            );
+            if (res.type === FETCH_SUBREDDIT_SUCCESS) {
+                console.log(res);
+                setSelectedSubreddit(res.payload);
+                setSubredditClicked(true);
+            }
+        } catch (err) {
+            console.log(`${err.type} - ${err.payload?.stack}`);
+        }
+    }
 
     return (
         <div className="grid grid-cols-12 text-gray-500 py-2 px-4 hover:bg-gray-900 rounded-lg">
@@ -58,7 +78,10 @@ function ListPostItem({ post, id }) {
                         ) : (
                             <>
                                 <p>Posted to</p>
-                                <p className="cursor-pointer text-orange-200 hover:text-orange-100 hover:underline">
+                                <p
+                                    className="cursor-pointer text-orange-200 hover:text-orange-100 hover:underline"
+                                    id={`subreddit_${post.data.subreddit_name_prefixed}`}
+                                    onClick={handleSubredditClick}>
                                     {post.data.subreddit_name_prefixed}
                                 </p>
                                 <p>by</p>
