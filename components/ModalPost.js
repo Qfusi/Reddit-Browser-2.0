@@ -17,7 +17,7 @@ function ModalPost({ post }) {
                 <div className="pr-8">
                     <ItemVote item={post} />
                 </div>
-                <div className="flex-col truncate max-w-screen-lg">
+                <div className="flex-col max-w-screen-lg">
                     <div className="flex text-sm space-x-2">
                         {crossposted && (
                             <div className="flex bg-orange-500 rounded-full text-white px-2 text-sm items-center space-x-1">

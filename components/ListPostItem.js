@@ -30,7 +30,6 @@ function ListPostItem({ post, id }) {
                 post.data.subreddit_name_prefixed
             );
             if (res.type === FETCH_SUBREDDIT_SUCCESS) {
-                console.log(res);
                 setSelectedSubreddit(res.payload);
                 setSubredditClicked(true);
             }
@@ -57,7 +56,7 @@ function ListPostItem({ post, id }) {
                 )}
                 <div className="flex flex-col grow">
                     <div
-                        className="flex space-x-2 truncate
+                        className="flex space-x-2
                     max-w-xs md:max-w-md lg:max-w-screen-sm
                     xl:max-w-screen-md 2xl:max-w-screen-lg">
                         {post.data.post_hint == 'link' && post.data.crosspost_parent && (

@@ -8,6 +8,7 @@ import {
     FETCH_MY_SUBSCRIPTIONS_SUCCESS
 } from '../actions/fetchMySubscriptions';
 import { subredditClickedState, subredditIdState } from '../atoms/subredditAtom';
+import Searchbar from './Searchbar';
 
 function Sidebar() {
     const { data: session } = useSession();
@@ -51,6 +52,9 @@ function Sidebar() {
                     <HomeIcon className="h-5 w-5" />
                     <p>Home</p>
                 </button>
+
+                <Searchbar />
+
                 <hr className="border-t-[0.1px] border-gray-900" />
 
                 {subreddits.length ? (
